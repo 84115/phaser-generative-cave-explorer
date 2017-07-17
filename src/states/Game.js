@@ -19,6 +19,22 @@ export default class GameState extends Phaser.State
             this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'star');
         }
 
+
+
+        this.platforms = this.add.physicsGroup();
+
+        for (var i = 0; i < 100; i++)
+        {
+            this.platforms.create(this.game.world.randomX, this.game.world.randomY, 'dude');
+        }
+
+        this.platforms.setAll('body.allowGravity', false);
+        this.platforms.setAll('body.immovable', true);
+
+
+
+
+
         this.dude = new Dude(this.game, 0, 3000, 'dude_sheet');
 
         this.game.add.existing(this.dude);
@@ -58,6 +74,8 @@ export default class GameState extends Phaser.State
 
     update()
     {
+        this.game.physics.arcade.collide(this.dude, this.platforms);
+
         if (cursors.up.isDown)
         {
             weapon.fireAngle = Phaser.ANGLE_UP;

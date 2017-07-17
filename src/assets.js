@@ -62,6 +62,23 @@ export default {
     key: 'dude',
     type: 'image'
   },
+  // {
+  //   key: 'dude_sheet',
+  //   type: 'image'
+  // },
+  {
+    //  Example: Add a spritesheet texture.
+    //
+    //  If `url` is omitted, a pattern `<key>.png` is assumed.
+    key: 'dude_sheet',
+    type: 'spritesheet',
+    url: 'dude_sheet.png',
+    margin: 0,
+    spacing: 0,
+    frameMax: 8,
+    frameWidth: 32,
+    frameHeight: 48
+  },
   {
     key: 'star',
     type: 'image'

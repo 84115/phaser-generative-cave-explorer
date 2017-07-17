@@ -5,16 +5,29 @@
  * A sample prefab (extended game object class), for displaying the Phaser
  * logo.
  */
+
+var facing = 'left';
+
 export default class Dude extends Phaser.Sprite
 {
 
-    constructor(game, x, y, asset)
+    constructor(game, x, y, key, frame)
     {
-        super(game, x, y, asset);
+        super(game, x, y, key, frame);
+
+
 
         this.setHealth(10);
         this.setControls();
         this.setPhysics();
+        this.body.setSize(20, 32, 5, 16);
+        this.animations.add('left', [0, 1, 2, 3], 9, true);
+        this.animations.add('turn', [4], 20, true);
+        this.animations.add('right', [5, 6, 7, 8], 9, true);
+    }
+
+    create() {
+
     }
 
     update()
@@ -32,16 +45,40 @@ export default class Dude extends Phaser.Sprite
 
             if (this.leftKey.isDown)
             {
+                if (facing != 'left')
+                {
+                    this.animations.play('left');
+                    facing = 'left';
+                }
+
                 this.body.velocity.x = -125;
                 this.x--;
             }
             else if (this.rightKey.isDown)
             {
+                if (facing != 'right')
+                {
+                    this.animations.play('right');
+                    facing = 'right';
+                }
+
                 this.body.velocity.x = 125;
                 this.x++;
             }
             else
             {
+                if (facing != 'idle')
+                {
+                    this.animations.stop();
+
+                    if (facing == 'left')
+                        this.frame = 0;
+                    else
+                        this.frame = 5;
+
+                    facing = 'idle';
+                }
+
                 this.body.velocity.x = 0;
             }
         }
@@ -65,9 +102,9 @@ export default class Dude extends Phaser.Sprite
     {
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
-        this.body.gravity.y = 1000;
+        this.body.gravity.y = 500;
         this.body.maxVelocity.y = 500;
-        this.body.bounce.y = 0.2;
+        this.body.bounce.y = 0.1;
         this.body.collideWorldBounds = true;
     }
 

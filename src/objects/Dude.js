@@ -6,7 +6,7 @@
  * logo.
  */
 
-var facing = 'left';
+var facing = 'right';
 
 export default class Dude extends Phaser.Sprite
 {
@@ -24,6 +24,7 @@ export default class Dude extends Phaser.Sprite
         this.animations.add('left', [0, 1, 2, 3], 9, true);
         this.animations.add('turn', [4], 20, true);
         this.animations.add('right', [5, 6, 7, 8], 9, true);
+        this.animations.add('idle', [4], 20);
     }
 
     create() {
@@ -45,39 +46,21 @@ export default class Dude extends Phaser.Sprite
 
             if (this.leftKey.isDown)
             {
-                if (facing != 'left')
-                {
-                    this.animations.play('left');
-                    facing = 'left';
-                }
+                if (facing != 'left') this.setAnimation('left');
 
                 this.body.velocity.x = -125;
                 this.x--;
             }
             else if (this.rightKey.isDown)
             {
-                if (facing != 'right')
-                {
-                    this.animations.play('right');
-                    facing = 'right';
-                }
+                if (facing != 'right') this.setAnimation('right');
 
                 this.body.velocity.x = 125;
                 this.x++;
             }
             else
             {
-                if (facing != 'idle')
-                {
-                    this.animations.stop();
-
-                    if (facing == 'left')
-                        this.frame = 0;
-                    else
-                        this.frame = 5;
-
-                    facing = 'idle';
-                }
+                if (facing != 'idle') this.setAnimation('idle');
 
                 this.body.velocity.x = 0;
             }
@@ -106,6 +89,12 @@ export default class Dude extends Phaser.Sprite
         this.body.maxVelocity.y = 500;
         this.body.bounce.y = 0.1;
         this.body.collideWorldBounds = true;
+    }
+
+    setAnimation(animation='idle')
+    {
+        this.animations.play(animation);
+        facing = animation;
     }
 
     damage(amount)

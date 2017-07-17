@@ -22,7 +22,6 @@ export default class GameState extends Phaser.State
 
 
         this.platforms = this.add.physicsGroup();
-
         for (var i = 0; i < 100; i++)
         {
             this.platforms.create(this.game.world.randomX, this.game.world.randomY, 'dude');
@@ -76,26 +75,44 @@ export default class GameState extends Phaser.State
     {
         this.game.physics.arcade.collide(this.dude, this.platforms);
 
-        if (cursors.up.isDown)
-        {
-            weapon.fireAngle = Phaser.ANGLE_UP;
-            this.game.camera.y -= 4;
-        }
-        else if (cursors.down.isDown)
-        {
-            weapon.fireAngle = Phaser.ANGLE_DOWN;
-            this.game.camera.y += 4;
-        }
+        this.game.physics.arcade.overlap(weapon.bullets, this.platforms, function(bullet, platform){
+            bullet.kill();
+             platform.kill();
+         }, null, this);
+  
+        window._Phaser = Phaser;
 
-        if (cursors.left.isDown)
-        {
-            weapon.fireAngle = Phaser.ANGLE_LEFT;
-            this.game.camera.x -= 4;
+        if (cursors.up.isDown) {
+            if (cursors.left.isDown) {
+                weapon.fireAngle = Phaser.ANGLE_NORTH_WEST;
+            }
+            else if (cursors.right.isDown) {
+                weapon.fireAngle = Phaser.ANGLE_NORTH_EAST;
+            }
+            else {
+                weapon.fireAngle = Phaser.ANGLE_UP;
+            }
         }
-        else if (cursors.right.isDown)
-        {
-            weapon.fireAngle = Phaser.ANGLE_RIGHT;
-            this.game.camera.x += 4;
+        else if (cursors.down.isDown) {
+            if (cursors.left.isDown) {
+                weapon.fireAngle = Phaser.ANGLE_SOUTH_WEST;
+            }
+            else if (cursors.right.isDown) {
+                weapon.fireAngle = Phaser.ANGLE_SOUTH_EAST;
+            }
+            else {
+                weapon.fireAngle = Phaser.ANGLE_DOWN;
+            }
+        }
+        else {
+            if (cursors.left.isDown)
+            {
+                weapon.fireAngle = Phaser.ANGLE_LEFT;
+            }
+            else if (cursors.right.isDown)
+            {
+                weapon.fireAngle = Phaser.ANGLE_RIGHT;
+            }
         }
 
         if (fireButton.isDown)

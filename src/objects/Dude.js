@@ -77,22 +77,19 @@ export default class Dude extends Phaser.Sprite
 
             if (this.leftKey.isDown)
             {
-                if (this.facing != 'left') this.setAnimation('left');
-
+                this.setAnimation('left');
                 this.body.velocity.x = -125;
                 this.x--;
             }
             else if (this.rightKey.isDown)
             {
-                if (this.facing != 'right') this.setAnimation('right');
-
+                this.setAnimation('right');
                 this.body.velocity.x = 125;
                 this.x++;
             }
             else
             {
-                if (this.facing != 'idle') this.setAnimation('idle');
-
+                this.setAnimation('idle');
                 this.body.velocity.x = 0;
             }
 
@@ -162,8 +159,10 @@ export default class Dude extends Phaser.Sprite
 
     setAnimation(animation='idle')
     {
-        this.animations.play(animation);
-        this.facing = animation;
+        if (this.facing != animation) {
+            this.animations.play(animation);
+            this.facing = animation;
+        }
     }
 
     damage(amount)

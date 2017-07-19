@@ -62,6 +62,19 @@ export default class Dude extends Phaser.Sprite
                 }
             }
 
+            if (this.upKey.isDown) {
+                if (this.game.time.now) {
+                    if (this.leftKey.isDown && (this.body.touching.left|| this.body.touching.left)) {
+                        this.body.velocity.x = 450;
+                        this.body.velocity.y = 400;
+                    }
+                    else if (this.rightKey.isDown && (this.body.touching.right|| this.body.touching.right)) {
+                        this.body.velocity.x = -450;
+                        this.body.velocity.y = 400;
+                    }
+                }
+            }
+
             if (this.leftKey.isDown)
             {
                 if (this.facing != 'left') this.setAnimation('left');

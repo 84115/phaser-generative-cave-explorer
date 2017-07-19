@@ -1,10 +1,5 @@
 import Dude from 'objects/Dude';
 
-var sprite;
-var weapon;
-var cursors;
-var fireButton;
-
 export default class GameState extends Phaser.State
 {
 
@@ -19,8 +14,6 @@ export default class GameState extends Phaser.State
             this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'star');
         }
 
-
-
         this.platforms = this.add.physicsGroup();
         for (var i = 0; i < 100; i++)
         {
@@ -30,100 +23,28 @@ export default class GameState extends Phaser.State
         this.platforms.setAll('body.allowGravity', false);
         this.platforms.setAll('body.immovable', true);
 
-
-
-
-
         this.dude = new Dude(this.game, 0, 3000, 'dude_sheet');
 
         this.game.add.existing(this.dude);
 
-        cursors = this.game.input.keyboard.createCursorKeys();
-
         this.game.camera.follow(this.dude, Phaser.Camera.FOLLOW_LOCKON);
 
-
-
-
-
-
-
-        //  Creates 30 bullets, using the 'star' graphic
-        weapon = this.game.add.weapon(30, 'star');
-
-        //  The bullet will be automatically killed when it leaves the world bounds
-        weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-
-        //  The speed at which the bullet is fired
-        weapon.bulletSpeed = 600;
-
-        //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
-        weapon.fireRate = 100;
-
-        fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-
-        //  Tell the Weapon to track the 'player' Sprite
-        //  With no offsets from the position
-        //  But the 'true' argument tells the weapon to track sprite rotation
-        weapon.trackSprite(this.dude, 32, 32, false);
-
-
-
+        console.log(this.dude);
     }
 
     update()
     {
         this.game.physics.arcade.collide(this.dude, this.platforms);
 
-        this.game.physics.arcade.overlap(weapon.bullets, this.platforms, function(bullet, platform){
+        this.game.physics.arcade.overlap(this.dude.weapon.bullets, this.platforms, function(bullet, platform) {
             bullet.kill();
-             platform.kill();
-         }, null, this);
-  
-        window._Phaser = Phaser;
-
-        if (cursors.up.isDown) {
-            if (cursors.left.isDown) {
-                weapon.fireAngle = Phaser.ANGLE_NORTH_WEST;
-            }
-            else if (cursors.right.isDown) {
-                weapon.fireAngle = Phaser.ANGLE_NORTH_EAST;
-            }
-            else {
-                weapon.fireAngle = Phaser.ANGLE_UP;
-            }
-        }
-        else if (cursors.down.isDown) {
-            if (cursors.left.isDown) {
-                weapon.fireAngle = Phaser.ANGLE_SOUTH_WEST;
-            }
-            else if (cursors.right.isDown) {
-                weapon.fireAngle = Phaser.ANGLE_SOUTH_EAST;
-            }
-            else {
-                weapon.fireAngle = Phaser.ANGLE_DOWN;
-            }
-        }
-        else {
-            if (cursors.left.isDown)
-            {
-                weapon.fireAngle = Phaser.ANGLE_LEFT;
-            }
-            else if (cursors.right.isDown)
-            {
-                weapon.fireAngle = Phaser.ANGLE_RIGHT;
-            }
-        }
-
-        if (fireButton.isDown)
-        {
-            weapon.fire();
-        }
+            platform.kill();
+        }, null, this);
     }
 
     render()
     {
-        weapon.debug();
+
     }
 
 }

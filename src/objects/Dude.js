@@ -7,6 +7,9 @@
  */
 
 var facing = 'right';
+var weapon = undefined;
+var cursors = undefined;
+var fireButton = undefined;
 
 export default class Dude extends Phaser.Sprite
 {
@@ -14,8 +17,6 @@ export default class Dude extends Phaser.Sprite
     constructor(game, x, y, key, frame)
     {
         super(game, x, y, key, frame);
-
-
 
         this.setHealth(10);
         this.setControls();
@@ -25,10 +26,27 @@ export default class Dude extends Phaser.Sprite
         this.animations.add('turn', [4], 20, true);
         this.animations.add('right', [5, 6, 7, 8], 9, true);
         this.animations.add('idle', [4], 20);
-    }
 
-    create() {
+        this.cursors = this.game.input.keyboard.createCursorKeys();
 
+        //  Creates 30 bullets, using the 'star' graphic
+        this.weapon = this.game.add.weapon(30, 'star');
+
+        //  The bullet will be automatically killed when it leaves the world bounds
+        this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+
+        //  The speed at which the bullet is fired
+        this.weapon.bulletSpeed = 600;
+
+        //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
+        this.weapon.fireRate = 100;
+
+        this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+
+        //  Tell the Weapon to track the 'player' Sprite
+        //  With no offsets from the position
+        //  But the 'true' argument tells the weapon to track sprite rotation
+        this.weapon.trackSprite(this, 32, 32, false);
     }
 
     update()
@@ -46,23 +64,61 @@ export default class Dude extends Phaser.Sprite
 
             if (this.leftKey.isDown)
             {
-                if (facing != 'left') this.setAnimation('left');
+                if (this.facing != 'left') this.setAnimation('left');
 
                 this.body.velocity.x = -125;
                 this.x--;
             }
             else if (this.rightKey.isDown)
             {
-                if (facing != 'right') this.setAnimation('right');
+                if (this.facing != 'right') this.setAnimation('right');
 
                 this.body.velocity.x = 125;
                 this.x++;
             }
             else
             {
-                if (facing != 'idle') this.setAnimation('idle');
+                if (this.facing != 'idle') this.setAnimation('idle');
 
                 this.body.velocity.x = 0;
+            }
+
+            if (this.cursors.up.isDown) {
+                if (this.cursors.left.isDown) {
+                    this.weapon.fireAngle = Phaser.ANGLE_NORTH_WEST;
+                }
+                else if (this.cursors.right.isDown) {
+                    this.weapon.fireAngle = Phaser.ANGLE_NORTH_EAST;
+                }
+                else {
+                    this.weapon.fireAngle = Phaser.ANGLE_UP;
+                }
+            }
+            else if (this.cursors.down.isDown) {
+                if (this.cursors.left.isDown) {
+                    this.weapon.fireAngle = Phaser.ANGLE_SOUTH_WEST;
+                }
+                else if (this.cursors.right.isDown) {
+                    this.weapon.fireAngle = Phaser.ANGLE_SOUTH_EAST;
+                }
+                else {
+                    this.weapon.fireAngle = Phaser.ANGLE_DOWN;
+                }
+            }
+            else {
+                if (this.cursors.left.isDown)
+                {
+                    this.weapon.fireAngle = Phaser.ANGLE_LEFT;
+                }
+                else if (this.cursors.right.isDown)
+                {
+                    this.weapon.fireAngle = Phaser.ANGLE_RIGHT;
+                }
+            }
+
+            if (this.fireButton.isDown)
+            {
+                this.weapon.fire();
             }
         }
     }
@@ -94,7 +150,7 @@ export default class Dude extends Phaser.Sprite
     setAnimation(animation='idle')
     {
         this.animations.play(animation);
-        facing = animation;
+        this.facing = animation;
     }
 
     damage(amount)

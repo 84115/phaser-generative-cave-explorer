@@ -1,3 +1,5 @@
+import RainbowText from 'objects/RainbowText';
+
 /*
  * Dude
  * ====
@@ -18,7 +20,7 @@ export default class Dude extends Phaser.Sprite
     {
         super(game, x, y, key, frame);
 
-        this.setHealth(10);
+        this.setHealth(25);
         this.setControls();
         this.setPhysics();
         this.body.setSize(20, 32, 5, 16);
@@ -47,31 +49,25 @@ export default class Dude extends Phaser.Sprite
         //  With no offsets from the position
         //  But the 'true' argument tells the weapon to track sprite rotation
         this.weapon.trackSprite(this, 32, 32, false);
+
+        this.text = new RainbowText(this.game, 0, 0, this.health);
     }
 
     update()
     {
         if (this.alive)
         {
+            if (this.health == 0) {
+                this.kill();
+            }
 
             if (this.upKey.isDown && (this.body.blocked.down || this.body.touching.down))
             {
                 if (this.game.time.now)
                 {
                     this.body.velocity.y = -500;
-                }
-            }
-
-            if (this.upKey.isDown) {
-                if (this.game.time.now) {
-                    if (this.leftKey.isDown && (this.body.touching.left|| this.body.touching.left)) {
-                        this.body.velocity.x = 450;
-                        this.body.velocity.y = 400;
-                    }
-                    else if (this.rightKey.isDown && (this.body.touching.right|| this.body.touching.right)) {
-                        this.body.velocity.x = -450;
-                        this.body.velocity.y = 400;
-                    }
+                    this.health--;
+                    this.text.setText(this.health);
                 }
             }
 

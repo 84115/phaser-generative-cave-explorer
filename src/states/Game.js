@@ -24,17 +24,21 @@ export default class GameState extends Phaser.State
         this.platforms.setAll('body.immovable', true);
 
         this.dude = new Dude(this.game, 0, 3000, 'dude_sheet');
-
+        this.dude.tint = Math.random() * 0xffffff;
         this.game.add.existing(this.dude);
 
         this.game.camera.follow(this.dude, Phaser.Camera.FOLLOW_LOCKON);
 
-        console.log(this.dude);
+        this.enemy = new Dude(this.game, 0, 500, 'dude_sheet');
+        this.game.add.existing(this.enemy);
     }
 
     update()
     {
         this.game.physics.arcade.collide(this.dude, this.platforms);
+
+        // this.game.physics.arcade.moveToObject(this.enemy, this.dude, 100, 200);
+        this.game.physics.arcade.moveToXY(this.enemy, this.dude.body.x-100, this.dude.body.y-100, 100, 200);
 
         this.game.physics.arcade.overlap(this.dude.weapon.bullets, this.platforms, function(bullet, platform) {
             bullet.kill();

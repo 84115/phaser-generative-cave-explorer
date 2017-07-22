@@ -146,16 +146,6 @@ export default class Player extends Dude
         this.rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
     }
 
-    setPhysics()
-    {
-        this.game.physics.enable(this, Phaser.Physics.ARCADE);
-
-        this.body.gravity.y = 500;
-        this.body.maxVelocity.y = 500;
-        this.body.bounce.y = 0.1;
-        this.body.collideWorldBounds = true;
-    }
-
     setAnimation(animation='idle')
     {
         if (this.facing != animation) {

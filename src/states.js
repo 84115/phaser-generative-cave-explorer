@@ -10,3 +10,4 @@ export { default as Boot } from 'states/Boot';
 export { default as Preload } from 'states/Preload';
 // export MainMenu from 'states/MainMenu';
 export { default as Game } from 'states/Game';
+export { default as Stage } from 'states/Stage';

@@ -36,17 +36,7 @@ export default class Enemy extends Phaser.Sprite
         //  But the 'true' argument tells the weapon to track sprite rotation
         this.weapon.trackSprite(this, 32, 32, false);
 
-        game.add.existing(this);
-    }
-
-    setPhysics()
-    {
-        this.game.physics.enable(this, Phaser.Physics.ARCADE);
-
-        this.body.gravity.y = 500;
-        this.body.maxVelocity.y = 500;
-        this.body.bounce.y = 0.1;
-        this.body.collideWorldBounds = true;
+        game.stage.add.existing(this);
     }
 
     update()

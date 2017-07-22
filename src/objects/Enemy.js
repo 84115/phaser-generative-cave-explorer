@@ -35,6 +35,8 @@ export default class Enemy extends Phaser.Sprite
         //  With no offsets from the position
         //  But the 'true' argument tells the weapon to track sprite rotation
         this.weapon.trackSprite(this, 32, 32, false);
+
+        game.add.existing(this);
     }
 
     setPhysics()

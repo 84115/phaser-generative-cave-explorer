@@ -12,13 +12,13 @@ export default class GameState extends Phaser.State
 
         this.game.world.resize(800, 3000);
 
-        for (var i = 0; i < 300; i++)
+        for (var i = 0; i < 250; i++)
         {
             this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'star');
         }
 
         this.platforms = this.add.physicsGroup();
-        for (var i = 0; i < 125; i++)
+        for (var i = 0; i < 140; i++)
         {
             this.platforms.create(this.game.world.randomX, this.game.world.randomY, 'dude');
         }
@@ -28,19 +28,15 @@ export default class GameState extends Phaser.State
 
         this.player = new Player(this.game, 0, 3000, 'dude_sheet');
         this.player.tint = Math.random() * 0xffffff;
-        this.game.add.existing(this.player);
-
-        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON);
 
         this.enemy = new Enemy(this.game, 0, 2500, 'dude_sheet');
         this.enemy.tint = Math.random() * 0xffffff;
-        this.game.add.existing(this.enemy);
 
         //  Create our Timer
-        this.timer = this.game.time.create(false);
+        this.timer = new Phaser.Timer(this.game, false);
 
-        //  Set a TimerEvent to occur after 2 seconds
-        this.timer.loop(1000, function() {
+        //  Set a TimerEvent to occur after 5 seconds
+        this.timer.loop(5000, function() {
             if (!this.enemy.alive) {
                 this.enemy.reset();
                 this.enemy.tint = Math.random() * 0xffffff;
@@ -50,6 +46,9 @@ export default class GameState extends Phaser.State
         //  Start the this.timer running - this is important!
         //  It won't start automatically, allowing you to hook it to button events and the like.
         this.timer.start();
+
+        // Camera
+        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON);
     }
 
     update()
@@ -71,11 +70,15 @@ export default class GameState extends Phaser.State
             this.game.camera.shake(0.05, 250);
         }, null, this);
 
-        this.game.physics.arcade.overlap(this.enemy.weapon.bullets, this.player, function(bullet, platform) {
+        this.game.physics.arcade.overlap(this.enemy.weapon.bullets, this.player, function(bullet, player) {
             bullet.kill();
-            platform.kill();
+            player.kill();
             this.game.camera.shake(0.05, 250);
         }, null, this);
+
+        if (this.player.body.y <= 1000) {
+            if (!this.text) this.text = new RainbowText(this.game, 0, 1000, 'You win!');
+        }
     }
 
     render()

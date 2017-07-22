@@ -18,7 +18,6 @@ export default class Player extends Dude
 
         this.setHealth(75);
         this.setControls();
-        this.setPhysics();
         this.body.setSize(20, 32, 5, 16);
         this.animations.add('left', [0, 1, 2, 3], 9, true);
         this.animations.add('turn', [4], 20, true);
@@ -28,13 +27,13 @@ export default class Player extends Dude
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
         //  Creates 30 bullets, using the 'star' graphic
-        this.weapon = this.game.add.weapon(30, 'star');
+        this.weapon = this.game.add.weapon(1, 'star');
 
         //  The bullet will be automatically killed when it leaves the world bounds
         this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
 
         //  The speed at which the bullet is fired
-        this.weapon.bulletSpeed = 600;
+        this.weapon.bulletSpeed = 500;
 
         //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
         this.weapon.fireRate = 100;
@@ -51,6 +50,8 @@ export default class Player extends Dude
         this.text = new RainbowText(this.game, 0, 0, this.health);
 
         this.resetButton = this.game.input.keyboard.addKey(Phaser.KeyCode.R);
+
+        game.add.existing(this);
     }
 
     update()

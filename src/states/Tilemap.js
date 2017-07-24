@@ -1,6 +1,3 @@
-var map;
-var layer;
-
 import Player from 'objects/Player';
 
 export default class TilemapState extends Phaser.State
@@ -14,24 +11,29 @@ export default class TilemapState extends Phaser.State
     create()
     {
         //  Because we're loading CSV map data we have to specify the tile size here or we can't render it
-        map = this.game.add.tilemap('map', 32, 32);
+        this.map = this.game.add.tilemap('map', 32, 32);
 
         //  Now add in the tileset
-        map.addTilesetImage('tiles');
+        this.map.addTilesetImage('tiles');
         
         //  Create our layer
-        layer = map.createLayer(0);
+        this.layer = this.map.createLayer(0);
 
         //  Resize the world
-        layer.resizeWorld();
+        this.layer.resizeWorld();
+
+        this.layer.debug = true;
+
+        this.map.setCollision([99, 123]);
 
         this.player = new Player(this.game, 0, 3000, 'dude_sheet');
-        this.player.tint = Math.random() * 0xffffff;
+
+        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
     }
 
     update()
     {
-
+        this.game.physics.arcade.collide(this.player, this.layer);
     }
 
     render()

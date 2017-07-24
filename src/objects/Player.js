@@ -47,7 +47,7 @@ export default class Player extends Dude
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
-        this.text = new RainbowText(this.game, 0, 0, this.health);
+        this.text = new RainbowText(this.game, 12, 12, this.health);
 
         this.resetButton = this.game.input.keyboard.addKey(Phaser.KeyCode.R);
 

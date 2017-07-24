@@ -33,7 +33,8 @@ export default class GameState extends Phaser.State
         this.enemy.tint = Math.random() * 0xffffff;
 
         //  Create our Timer
-        this.timer = new Phaser.Timer(this.game, false);
+        // this.timer = new Phaser.Timer(this.game, false);
+        this.timer = this.game.time.create(false);
 
         //  Set a TimerEvent to occur after 5 seconds
         this.timer.loop(5000, function() {

@@ -18,7 +18,7 @@ export default class TitleState extends Phaser.State
     {
         this.game.stage.backgroundColor = '#000';
 
-        if (this.game.renderType === Phaser.WEBGL) max = 500;
+        if (this.game.renderType === Phaser.WEBGL) max = 400;
 
         var sprites = this.game.add.spriteBatch();
 
@@ -45,6 +45,8 @@ export default class TitleState extends Phaser.State
         });
 
         text.anchor.setTo(0.5, 0.5);
+
+        this.startBounceTween(text);
     }
 
     update()
@@ -71,6 +73,20 @@ export default class TitleState extends Phaser.State
 
     render()
     {
+
+    }
+
+    startBounceTween(text)
+    {
+        text.y = 0;
+
+        var bounce = this.game.add.tween(text);
+
+        bounce.to({
+            y: this.game.world.centerY - text.height
+        }, 1000 + Math.random() * 3000, Phaser.Easing.Bounce.In);
+        // bounce.onComplete.add(this.startBounceTween, this);
+        bounce.start();
 
     }
 

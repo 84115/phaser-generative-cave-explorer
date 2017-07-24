@@ -25,7 +25,7 @@ export default class PreloadState extends Phaser.State
 		// asset. Don't forget to `import` them first. Example:
 		//this.add.plugin(MyPlugin/*, ... initialization parameters ... */);
 
-		this.state.start('Tilemap');
+		this.state.start('Game');
 	}
 
 	// --------------------------------------------------------------------------

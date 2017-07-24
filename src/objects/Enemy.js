@@ -1,3 +1,5 @@
+import Dude from 'objects/Dude';
+
 /*
  * Enemy
  * ====
@@ -6,7 +8,7 @@
  * logo.
  */
 
-export default class Enemy extends Phaser.Sprite
+export default class Enemy extends Dude
 {
 
     constructor(game, x, y, key, frame)
@@ -36,7 +38,7 @@ export default class Enemy extends Phaser.Sprite
         //  But the 'true' argument tells the weapon to track sprite rotation
         this.weapon.trackSprite(this, 32, 32, false);
 
-        game.stage.add.existing(this);
+        game.add.existing(this);
     }
 
     update()

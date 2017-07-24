@@ -75,10 +75,6 @@ export default class GameState extends Phaser.State
             player.kill();
             this.game.camera.shake(0.05, 250);
         }, null, this);
-
-        if (this.player.body.y <= 1000) {
-            if (!this.text) this.text = new RainbowText(this.game, 0, 1000, 'You win!');
-        }
     }
 
     render()

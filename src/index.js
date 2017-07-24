@@ -7,6 +7,7 @@ class Game extends Phaser.Game
 
 	constructor()
     {
+        // 32*16 = 512 ++ 32*32 = ...
 		super(800, 600, Phaser.AUTO, 'content', null);
 
   		// Dynamically add all required game states.

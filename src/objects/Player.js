@@ -26,23 +26,23 @@ export default class Player extends Dude
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
-        //  Creates 30 bullets, using the 'star' graphic
+        // Creates 30 bullets, using the 'star' graphic
         this.weapon = this.game.add.weapon(1, 'star');
 
-        //  The bullet will be automatically killed when it leaves the world bounds
+        // The bullet will be automatically killed when it leaves the world bounds
         this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
 
-        //  The speed at which the bullet is fired
+        // The speed at which the bullet is fired
         this.weapon.bulletSpeed = 500;
 
-        //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
+        // Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
         this.weapon.fireRate = 100;
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
-        //  Tell the Weapon to track the 'player' Sprite
-        //  With no offsets from the position
-        //  But the 'true' argument tells the weapon to track sprite rotation
+        // Tell the Weapon to track the 'player' Sprite
+        // With no offsets from the position
+        // But the 'true' argument tells the weapon to track sprite rotation
         this.weapon.trackSprite(this, 32, 32, false);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);

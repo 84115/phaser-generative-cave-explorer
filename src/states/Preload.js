@@ -7,6 +7,7 @@
  * much progress were made during the asset load.
  */
 
+import TilemapState from 'states/Game';
 import assets from '../assets';
 
 export default class PreloadState extends Phaser.State
@@ -24,6 +25,8 @@ export default class PreloadState extends Phaser.State
 		// Here is a good place to initialize plugins that depend on any game
 		// asset. Don't forget to `import` them first. Example:
 		//this.add.plugin(MyPlugin/*, ... initialization parameters ... */);
+
+		this.state.add('Game', TilemapState);
 
 		this.state.start('Game');
 	}

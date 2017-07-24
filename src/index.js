@@ -1,6 +1,5 @@
-// Import game states.
-import * as states from 'states';
-import module from 'core/module';
+import BootState from 'states/Boot';
+import PreloadState from 'states/Preload';
 
 class Game extends Phaser.Game
 {
@@ -10,8 +9,8 @@ class Game extends Phaser.Game
         // 32*16 = 512 ++ 32*32 = ...
 		super(800, 600, Phaser.AUTO, 'content', null);
 
-  		// Dynamically add all required game states.
-		module(states).forEach(([key, state]) => this.state.add(key, state));
+        this.state.add('Boot', BootState);
+        this.state.add('Preload', PreloadState);
 
 		this.state.start('Boot');
 	}

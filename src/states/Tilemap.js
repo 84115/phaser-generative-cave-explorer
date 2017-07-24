@@ -1,7 +1,7 @@
 var map;
 var layer;
 
-export default class StageState extends Phaser.State
+export default class TilemapState extends Phaser.State
 {
 
     preload() {

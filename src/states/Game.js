@@ -8,7 +8,7 @@ export default class GameState extends Phaser.State
 
     create()
     {
-        this.game.stage.backgroundColor = '#000daw';
+        this.game.stage.backgroundColor = '#000';
 
         this.game.world.resize(800, 3000);
 

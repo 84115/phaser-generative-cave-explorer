@@ -1,5 +1,6 @@
 import GameState from 'states/Game';
 import TilemapState from 'states/Tilemap';
+import TitleState from 'states/Title';
 
 export default class MainMenuState extends Phaser.State
 {
@@ -13,13 +14,16 @@ export default class MainMenuState extends Phaser.State
         this.createButton('Play Game', this.game.world.centerX, 100, 300, 100, function() {
             this.state.add('Game', GameState);
             this.state.start('Game');
-            // console.log(1);
         });
 
         this.createButton('Play Tilemap', this.game.world.centerX, 200, 300, 100, function() {
             this.state.add('Tilemap', TilemapState);
             this.state.start('Tilemap');
-            // console.log(1);
+        });
+
+        this.createButton('Play Title', this.game.world.centerX, 300, 300, 100, function() {
+            this.state.add('Title', TitleState);
+            this.state.start('Title');
         });
     }
 

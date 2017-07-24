@@ -1,6 +1,8 @@
 var map;
 var layer;
 
+import Player from 'objects/Player';
+
 export default class TilemapState extends Phaser.State
 {
 
@@ -22,6 +24,9 @@ export default class TilemapState extends Phaser.State
 
         //  Resize the world
         layer.resizeWorld();
+
+        this.player = new Player(this.game, 0, 3000, 'dude_sheet');
+        this.player.tint = Math.random() * 0xffffff;
     }
 
     update()

@@ -15,7 +15,7 @@ export default class TilemapState extends Phaser.State
 
         //  Now add in the tileset
         this.map.addTilesetImage('tiles');
-        
+
         //  Create our layer
         this.layer = this.map.createLayer(0);
 
@@ -24,7 +24,15 @@ export default class TilemapState extends Phaser.State
 
         this.layer.debug = true;
 
-        this.map.setCollision([99, 123]);
+        // this.map.setCollisionBetween(123, 123);
+        // this.map.setCollisionBetween(49);
+        this.map.setCollisionByExclusion([49, 123]);
+
+        // var water = this.map.searchTileIndex(89);
+        // water.collideDown = false;
+        // water.collideUp = false;
+        // water.collideLeft = false;
+        // water.collideRight = false;
 
         this.player = new Player(this.game, 0, 3000, 'dude_sheet');
 
@@ -34,6 +42,7 @@ export default class TilemapState extends Phaser.State
     update()
     {
         this.game.physics.arcade.collide(this.player, this.layer);
+        this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
     }
 
     render()

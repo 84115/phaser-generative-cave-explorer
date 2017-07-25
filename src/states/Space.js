@@ -16,6 +16,22 @@ export default class SpaceState extends Phaser.State
     {
         this.game.stage.backgroundColor = '#000';
 
+
+
+
+
+        this.platforms = this.add.group();
+        for (var i = 0; i < 20; i++)
+        {
+            this.platforms.create(this.game.world.randomX, this.game.world.randomY, 'star');
+        }
+        console.log(this.platforms);
+        this.platforms.setAll('tint', Math.random() * 0xffffff);
+
+
+
+
+
         // this.ship = new Ship(this.game, 0, 0, 'dude');
 
         // sprite = this.ship;
@@ -25,10 +41,12 @@ export default class SpaceState extends Phaser.State
 
         this.game.physics.arcade.enable(sprite);
 
-        this.game.physics.arcade.gravity.y = 125;
+        this.game.physics.arcade.gravity.y = 0;
 
-        sprite.body.drag.set(70);
+        sprite.body.drag.set(30);
         sprite.body.maxVelocity.set(200);
+
+        // sprite.angle = 45;
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -59,7 +77,7 @@ export default class SpaceState extends Phaser.State
             sprite.body.angularVelocity = 0;
         }
 
-        // this.game.world.wrap(sprite, 16);
+        this.game.world.wrap(sprite, 16);
     }
 
     render()

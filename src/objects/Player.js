@@ -154,9 +154,4 @@ export default class Player extends Dude
         }
     }
 
-    damage(amount)
-    {
-        super.damage(amount);
-    }
-
 }

@@ -26,7 +26,7 @@ export default class TilemapState extends Phaser.State
 
         // this.map.setCollisionBetween(123, 123);
         // this.map.setCollisionBetween(49);
-        this.map.setCollisionByExclusion([49, 123]);
+        this.map.setCollisionByExclusion([3, 49]);
 
         // var water = this.map.searchTileIndex(89);
         // water.collideDown = false;

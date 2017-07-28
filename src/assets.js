@@ -62,10 +62,14 @@ export default {
     key: 'dude',
     type: 'image'
   },
-  // {
-  //   key: 'dude_sheet',
-  //   type: 'image'
-  // },
+  {
+    key: 'ship',
+    type: 'image'
+  },
+  {
+    key: 'planet',
+    type: 'image'
+  },
   {
     //  Example: Add a spritesheet texture.
     //

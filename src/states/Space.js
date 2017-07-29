@@ -1,9 +1,12 @@
 import Ship from 'objects/Ship';
 
+import GameState from 'states/Game';
+
 var sprite;
 var weapon;
 var cursors;
 var fireButton;
+var planet;
 var space = 32 * 500;
 
 export default class SpaceState extends Phaser.State
@@ -22,7 +25,7 @@ export default class SpaceState extends Phaser.State
 
 
 
-
+        this.landButton = this.game.input.keyboard.addKey(Phaser.KeyCode.E);
 
 
         var star_count = (((space + space) / 2) / 4);
@@ -43,10 +46,8 @@ export default class SpaceState extends Phaser.State
 
 
 
-        var x = this.add.sprite(400, 300, 'planet');
-        var y = this.add.sprite(700, 900, 'planet');
-            y.tint = Math.random() * 0xffffff;
-
+        planet = this.add.sprite(400, 300, 'planet');
+        this.game.physics.arcade.enable(planet);
 
 
         // this.ship = new Ship(this.game, 0, 0, 'dude');
@@ -100,6 +101,14 @@ export default class SpaceState extends Phaser.State
         {
             sprite.body.angularVelocity = 0;
         }
+
+        this.game.physics.arcade.overlap(sprite, planet, function(bullet, platform) {
+            if (this.landButton.isDown)
+            {
+                this.state.add('Game', GameState);
+                this.state.start('Game');
+            }
+        }, null, this);
 
         this.game.world.wrap(sprite, 16);
     }

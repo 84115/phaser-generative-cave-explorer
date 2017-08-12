@@ -38,14 +38,14 @@ export default class Player extends Dude
         // Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
         this.weapon.fireRate = 100;
 
-        this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-
         // Tell the Weapon to track the 'player' Sprite
         // With no offsets from the position
         // But the 'true' argument tells the weapon to track sprite rotation
         this.weapon.trackSprite(this, 32, 32, false);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+
+        this.pauseButton = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
 
         this.text = new RainbowText(this.game, 12, 12, this.health);
 
@@ -122,6 +122,18 @@ export default class Player extends Dude
             if (this.fireButton.isDown)
             {
                 this.weapon.fire();
+            }
+
+            if (this.pauseButton.isDown)
+            {
+                if (this.game.physics.arcade.isPaused == true)
+                {    
+                    this.game.physics.arcade.isPaused = false;
+                }
+                else
+                {
+                    this.game.physics.arcade.isPaused = true;
+                }
             }
         }
         else {

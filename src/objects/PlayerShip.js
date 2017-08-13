@@ -21,7 +21,8 @@ export default class PlayerShip extends Ship
 
         this.game.physics.arcade.gravity.y = 0;
 
-        this.body.acceleration.x = 4;
+        this.body.acceleration.x = 10;
+        this.body.acceleration.y = 10;
         this.body.drag.set(20);
         this.body.maxVelocity.set(25);
         this.body.maxVelocity.x = 100;
@@ -32,6 +33,26 @@ export default class PlayerShip extends Ship
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+
+        this.leftEemitter = this.game.add.emitter(this.game.world.centerX, this.game.world.centerY, 400);
+
+        this.leftEemitter.makeParticles('star');
+
+        this.leftEemitter.gravity = 0;
+        this.leftEemitter.setAlpha(1, 0, 3000);
+        this.leftEemitter.setScale(0.8, 0, 0.8, 0, 3000);
+
+        this.leftEemitter.start(false, 3000, 1);
+
+        this.rightEemitter = this.game.add.emitter(this.game.world.centerX, this.game.world.centerY, 400);
+
+        this.rightEemitter.makeParticles('star');
+
+        this.rightEemitter.gravity = 0;
+        this.rightEemitter.setAlpha(1, 0, 3000);
+        this.rightEemitter.setScale(0.8, 0, 0.8, 0, 3000);
+
+        this.rightEemitter.start(false, 3000, 1);
 
         game.add.existing(this);
     }
@@ -59,6 +80,24 @@ export default class PlayerShip extends Ship
         {
             this.body.angularVelocity = 0;
         }
+
+        var px = this.body.velocity.x;
+        var py = this.body.velocity.y;
+
+        px *= -1;
+        py *= -1;
+
+        this.leftEemitter.minParticleSpeed.set(px, py);
+        this.leftEemitter.maxParticleSpeed.set(px, py);
+
+        this.leftEemitter.emitX = this.x-6;
+        this.leftEemitter.emitY = this.y+16;
+
+        this.rightEemitter.minParticleSpeed.set(px, py);
+        this.rightEemitter.maxParticleSpeed.set(px, py);
+
+        this.rightEemitter.emitX = this.x+6;
+        this.rightEemitter.emitY = this.y+16;
     }
 
 }

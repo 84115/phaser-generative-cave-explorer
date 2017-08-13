@@ -23,7 +23,8 @@ export default class SpaceState extends Phaser.State
         }
 
         this.planet = this.add.sprite(400, 300, 'planet');
-
+        // this.planet.tint = Math.random() * 0xffffff;
+        
         this.game.physics.arcade.enable(this.planet);
 
         this.ship = new PlayerShip(this.game, 400, 300, 'ship');

@@ -21,12 +21,12 @@ export default class PlayerShip extends Ship
 
         this.game.physics.arcade.gravity.y = 0;
 
-        this.body.acceleration.x = 10;
-        this.body.acceleration.y = 10;
-        this.body.drag.set(20);
-        this.body.maxVelocity.set(25);
-        this.body.maxVelocity.x = 100;
-        this.body.maxVelocity.y = 100;
+        this.body.acceleration.x = 35;
+        this.body.acceleration.y = 35;
+        this.body.drag.set(35);
+        this.body.angularDrag = 50;
+        this.body.maxVelocity.x = 250;
+        this.body.maxVelocity.y = 250;
 
         this.angle = -90;
 
@@ -34,31 +34,43 @@ export default class PlayerShip extends Ship
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
-        this.leftEemitter = this.game.add.emitter(this.game.world.centerX, this.game.world.centerY, 400);
+        this.emitter = this.game.add.emitter(this.x, this.y, 250);
 
-        this.leftEemitter.makeParticles('star');
+        this.emitter.makeParticles('star');
 
-        this.leftEemitter.gravity = 0;
-        this.leftEemitter.setAlpha(1, 0, 3000);
-        this.leftEemitter.setScale(0.8, 0, 0.8, 0, 3000);
+        this.emitter.gravity = 0;
+        this.emitter.setAlpha(1, 0, 3000);
+        this.emitter.setScale(0.8, 0, 0.8, 0, 3000);
 
-        this.leftEemitter.start(false, 3000, 1);
+        this.emitter.start(false, 3000, 1);
 
-        this.rightEemitter = this.game.add.emitter(this.game.world.centerX, this.game.world.centerY, 400);
+        this.addChild(this.emitter);
+        // this.emitter.angle = 90;
 
-        this.rightEemitter.makeParticles('star');
+        // Creates 30 bullets, using the 'star' graphic
+        this.weapon = this.game.add.weapon(100, 'star');
 
-        this.rightEemitter.gravity = 0;
-        this.rightEemitter.setAlpha(1, 0, 3000);
-        this.rightEemitter.setScale(0.8, 0, 0.8, 0, 3000);
+        // The bullet will be automatically killed when it leaves the world bounds
+        this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
 
-        this.rightEemitter.start(false, 3000, 1);
+        // The speed at which the bullet is fired
+        this.weapon.bulletSpeed = 750;
+
+        // Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
+        this.weapon.fireRate = 100;
+
+        // Tell the Weapon to track the 'player' Sprite
+        // With no offsets from the position
+        // But the 'true' argument tells the weapon to track sprite rotation
+        this.weapon.trackSprite(this, 24, 0, true);
 
         game.add.existing(this);
     }
 
     update()
     {
+        // this.emitter.rotation=this.rotation;
+
         if (this.cursors.up.isDown)
         {
             this.game.physics.arcade.accelerationFromRotation(this.rotation, 150, this.body.acceleration);
@@ -66,6 +78,11 @@ export default class PlayerShip extends Ship
         else
         {
             this.body.acceleration.set(0);
+        }
+
+        if (this.cursors.down.isDown)
+        {
+            this.game.physics.arcade.accelerationFromRotation(this.rotation, -25, this.body.acceleration);
         }
 
         if (this.cursors.left.isDown)
@@ -81,23 +98,26 @@ export default class PlayerShip extends Ship
             this.body.angularVelocity = 0;
         }
 
+        if (this.fireButton.isDown)
+        {
+            this.weapon.fire();
+        }
+
         var px = this.body.velocity.x;
         var py = this.body.velocity.y;
 
         px *= -1;
         py *= -1;
 
-        this.leftEemitter.minParticleSpeed.set(px, py);
-        this.leftEemitter.maxParticleSpeed.set(px, py);
+        this.emitter.minParticleSpeed.set(px, py);
+        this.emitter.maxParticleSpeed.set(px, py);
 
-        this.leftEemitter.emitX = this.x-6;
-        this.leftEemitter.emitY = this.y+16;
+        this.emitter.emitX = this.body.x/*+16*/;
+        this.emitter.emitY = this.body.y/*+32*/;
 
-        this.rightEemitter.minParticleSpeed.set(px, py);
-        this.rightEemitter.maxParticleSpeed.set(px, py);
-
-        this.rightEemitter.emitX = this.x+6;
-        this.rightEemitter.emitY = this.y+16;
+        this.emitter.forEach(function(item) {
+            item.rotation = this.rotation;
+        }, this);
     }
 
 }

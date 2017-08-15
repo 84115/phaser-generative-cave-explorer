@@ -44,9 +44,6 @@ export default class PlayerShip extends Ship
 
         this.emitter.start(false, 3000, 1);
 
-        this.addChild(this.emitter);
-        // this.emitter.angle = 90;
-
         // Creates 30 bullets, using the 'star' graphic
         this.weapon = this.game.add.weapon(100, 'star');
 
@@ -69,38 +66,42 @@ export default class PlayerShip extends Ship
 
     update()
     {
-        // this.emitter.rotation=this.rotation;
+        if (this.alive)
+        {
+            if (this.cursors.up.isDown)
+            {
+                this.game.physics.arcade.accelerationFromRotation(this.rotation, 150, this.body.acceleration);
+            }
+            else
+            {
+                this.body.acceleration.set(0);
+            }
 
-        if (this.cursors.up.isDown)
-        {
-            this.game.physics.arcade.accelerationFromRotation(this.rotation, 150, this.body.acceleration);
-        }
-        else
-        {
-            this.body.acceleration.set(0);
-        }
+            if (this.cursors.down.isDown)
+            {
+                this.game.physics.arcade.accelerationFromRotation(this.rotation, -25, this.body.acceleration);
+            }
 
-        if (this.cursors.down.isDown)
-        {
-            this.game.physics.arcade.accelerationFromRotation(this.rotation, -25, this.body.acceleration);
-        }
+            if (this.cursors.left.isDown)
+            {
+                this.body.angularVelocity = -300;
+            }
+            else if (this.cursors.right.isDown)
+            {
+                this.body.angularVelocity = 300;
+            }
+            else
+            {
+                this.body.angularVelocity = 0;
+            }
 
-        if (this.cursors.left.isDown)
-        {
-            this.body.angularVelocity = -300;
+            if (this.fireButton.isDown)
+            {
+                this.weapon.fire();
+            }
         }
-        else if (this.cursors.right.isDown)
-        {
-            this.body.angularVelocity = 300;
-        }
-        else
-        {
-            this.body.angularVelocity = 0;
-        }
-
-        if (this.fireButton.isDown)
-        {
-            this.weapon.fire();
+        else {
+            this.emitter.kill();
         }
 
         var px = this.body.velocity.x;
@@ -112,12 +113,14 @@ export default class PlayerShip extends Ship
         this.emitter.minParticleSpeed.set(px, py);
         this.emitter.maxParticleSpeed.set(px, py);
 
-        this.emitter.emitX = this.body.x/*+16*/;
-        this.emitter.emitY = this.body.y/*+32*/;
+        this.emitter.emitX = this.body.x+15/*+16*/;
+        this.emitter.emitY = this.body.y+17/*+32*/;
+        // this.emitter.x = this.body.x+15;
+        // this.emitter.y = this.body.y+17;
 
-        this.emitter.forEach(function(item) {
-            item.rotation = this.rotation;
-        }, this);
+        // this.emitter.forEach(function(item) {
+        //     item.rotation = this.rotation;
+        // }, this);
     }
 
 }

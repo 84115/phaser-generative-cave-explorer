@@ -40,11 +40,8 @@ export default class SpaceState extends Phaser.State
     {
         this.game.physics.arcade.moveToXY(this.enemy, this.ship.body.x - 50, this.ship.body.y - 50, 100, 200);
 
-        this.game.physics.arcade.overlap(this.enemy, this.ship, function(enemy, ship) {
-            enemy.kill();
-            ship.kill();
-            this.game.camera.shake(0.05, 250);
-        }, null, this);
+        this.game.physics.arcade.overlap(this.enemy, this.ship, this.killPair, null, this);
+        this.game.physics.arcade.overlap(this.enemy, this.ship.weapon.bullets, this.killPair, null, this);
 
         this.game.physics.arcade.overlap(this.ship, this.planet, function(bullet, platform) {
             if (this.landButton.isDown)
@@ -55,6 +52,14 @@ export default class SpaceState extends Phaser.State
         }, null, this);
 
         this.game.world.wrap(this.ship, 16);
+    }
+
+    killPair(a, b)
+    {
+        a.kill();
+        b.kill();
+
+        this.game.camera.shake(0.025, 250);
     }
 
     star_count()

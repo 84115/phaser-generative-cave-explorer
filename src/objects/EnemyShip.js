@@ -33,7 +33,7 @@ export default class EnemyShip extends Ship
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
-        game.add.existing(this);
+        // game.add.existing(this);
     }
 
 }

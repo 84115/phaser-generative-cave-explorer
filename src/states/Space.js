@@ -29,8 +29,12 @@ export default class SpaceState extends Phaser.State
 
         this.ship = new PlayerShip(this.game, 400, 300, 'ship');
 
-        this.enemy = new EnemyShip(this.game, 300, 200, 'ship');
-        this.enemy.tint = Math.random() * 0xffffff;
+        // this.enemy = new EnemyShip(this.game, 300, 200, 'ship');
+        // this.enemy.tint = Math.random() * 0xffffff;
+
+        this.enemyGroup = this.game.add.group();
+        this.game.physics.arcade.enable(this.enemyGroup);
+        this.game.physics.arcade.collide(this.enemyGroup);
 
         // Camera
         this.game.camera.follow(this.ship, Phaser.Camera.FOLLOW_TOPDOWN);
@@ -38,10 +42,21 @@ export default class SpaceState extends Phaser.State
 
     update()
     {
-        this.game.physics.arcade.moveToXY(this.enemy, this.ship.body.x - 50, this.ship.body.y - 50, 100, 200);
+        var offsetX = this.ship.body.x + this.game.rnd.between(50, 200);
+        var offsetY = this.ship.body.y + this.game.rnd.between(50, 200);
 
-        this.game.physics.arcade.overlap(this.enemy, this.ship, this.killPair, null, this);
-        this.game.physics.arcade.overlap(this.enemy, this.ship.weapon.bullets, this.killPair, null, this);
+        // Add some sort of queue
+        if (this.enemyGroup.total < 10)
+        {
+            this.enemyGroup.add(new EnemyShip(this.game, offsetX, offsetY, 'ship'));
+        }
+
+        console.log(this.enemyGroup.total);
+
+        // this.game.physics.arcade.moveToXY(this.enemyGroup, this.ship.body.x - 50, this.ship.body.y - 50, 100, 200);
+
+        this.game.physics.arcade.overlap(this.enemyGroup, this.ship, this.killPair, null, this);
+        this.game.physics.arcade.overlap(this.enemyGroup, this.ship.weapon.bullets, this.killPair, null, this);
 
         this.game.physics.arcade.overlap(this.ship, this.planet, function(bullet, platform) {
             if (this.landButton.isDown)
@@ -59,7 +74,7 @@ export default class SpaceState extends Phaser.State
         a.kill();
         b.kill();
 
-        this.game.camera.shake(0.025, 250);
+        this.game.camera.shake(0.0125, 125);
     }
 
     star_count()

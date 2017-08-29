@@ -39,10 +39,10 @@ export default class PlayerShip extends Ship
         this.emitter.makeParticles('star');
 
         this.emitter.gravity = 0;
-        this.emitter.setAlpha(1, 0, 3000);
-        this.emitter.setScale(0.8, 0, 0.8, 0, 3000);
+        this.emitter.setAlpha(1, 0, 800);
+        this.emitter.setScale(0.8, 0, 0.8, 0, 800);
 
-        this.emitter.start(false, 3000, 1);
+        this.emitter.start(false, 400, 1);
 
         // Creates 30 bullets, using the 'star' graphic
         this.weapon = this.game.add.weapon(100, 'star');
@@ -51,7 +51,7 @@ export default class PlayerShip extends Ship
         this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
 
         // The speed at which the bullet is fired
-        this.weapon.bulletSpeed = 750;
+        this.weapon.bulletSpeed = 1000;
         // this.weapon.bulletSpeed = 1;
 
         // Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
@@ -72,7 +72,7 @@ export default class PlayerShip extends Ship
         {
             if (this.cursors.up.isDown)
             {
-                this.game.physics.arcade.accelerationFromRotation(this.rotation, 150, this.body.acceleration);
+                this.game.physics.arcade.accelerationFromRotation(this.rotation, 250, this.body.acceleration);
             }
             else
             {
@@ -81,7 +81,7 @@ export default class PlayerShip extends Ship
 
             if (this.cursors.down.isDown)
             {
-                this.game.physics.arcade.accelerationFromRotation(this.rotation, -25, this.body.acceleration);
+                this.game.physics.arcade.accelerationFromRotation(this.rotation, -250/2, this.body.acceleration);
             }
 
             if (this.cursors.left.isDown)

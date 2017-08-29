@@ -42,18 +42,21 @@ export default class SpaceState extends Phaser.State
 
     update()
     {
-        var offsetX = this.ship.body.x + this.game.rnd.between(50, 200);
-        var offsetY = this.ship.body.y + this.game.rnd.between(50, 200);
+        var offsetX = this.ship.body.x + this.game.rnd.between(-1400, 1400);
+        var offsetY = this.ship.body.y + this.game.rnd.between(-1400, 1400);
 
         // Add some sort of queue
-        if (this.enemyGroup.total < 10)
+        if (this.enemyGroup.total < 20)
         {
             this.enemyGroup.add(new EnemyShip(this.game, offsetX, offsetY, 'ship'));
         }
 
         console.log(this.enemyGroup.total);
 
-        // this.game.physics.arcade.moveToXY(this.enemyGroup, this.ship.body.x - 50, this.ship.body.y - 50, 100, 200);
+        for (var i = 0; i < this.enemyGroup.children.length; i++) {
+            this.game.physics.arcade.moveToXY(this.enemyGroup.children[i], this.ship.body.x, this.ship.body.y, 100, 200);
+            // this.enemyGroup.children[i].rotation = this.game.physics.arcade.angleToPointer(this.ship.body);
+        }
 
         this.game.physics.arcade.overlap(this.enemyGroup, this.ship, this.killPair, null, this);
         this.game.physics.arcade.overlap(this.enemyGroup, this.ship.weapon.bullets, this.killPair, null, this);
@@ -74,7 +77,7 @@ export default class SpaceState extends Phaser.State
         a.kill();
         b.kill();
 
-        this.game.camera.shake(0.0125, 125);
+        this.game.camera.shake(0.025, 125);
     }
 
     star_count()

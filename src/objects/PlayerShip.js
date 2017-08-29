@@ -21,12 +21,12 @@ export default class PlayerShip extends Ship
 
         this.game.physics.arcade.gravity.y = 0;
 
-        this.body.acceleration.x = 35;
-        this.body.acceleration.y = 35;
-        this.body.drag.set(35);
-        this.body.angularDrag = 50;
-        this.body.maxVelocity.x = 250;
-        this.body.maxVelocity.y = 250;
+        this.body.acceleration.x = 75;
+        this.body.acceleration.y = 75;
+        this.body.drag.set(10);
+        this.body.angularDrag = 0;
+        this.body.maxVelocity.x = 200;
+        this.body.maxVelocity.y = 200;
 
         this.angle = -90;
 
@@ -48,13 +48,15 @@ export default class PlayerShip extends Ship
         this.weapon = this.game.add.weapon(100, 'star');
 
         // The bullet will be automatically killed when it leaves the world bounds
-        this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        this.weapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
 
         // The speed at which the bullet is fired
         this.weapon.bulletSpeed = 750;
+        // this.weapon.bulletSpeed = 1;
 
         // Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
-        this.weapon.fireRate = 100;
+        this.weapon.fireRate = 1;
+        // this.weapon.fireRate = 200;
 
         // Tell the Weapon to track the 'player' Sprite
         // With no offsets from the position

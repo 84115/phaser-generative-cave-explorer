@@ -14,8 +14,6 @@ export default class Dude extends Phaser.Sprite
         super(game, x, y, key, frame);
 
         this.setPhysics();
-
-        this.tint = Math.random() * 0xffffff;
     }
 
     setPhysics()

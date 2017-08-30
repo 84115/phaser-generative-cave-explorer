@@ -45,6 +45,8 @@ export default class Player extends Dude
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
+        this.tintButton = this.game.input.keyboard.addKey(Phaser.KeyCode.T);
+
         this.pauseButton = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
 
         this.text = new RainbowText(this.game, 12, 12, this.health);
@@ -122,6 +124,10 @@ export default class Player extends Dude
             if (this.fireButton.isDown)
             {
                 this.weapon.fire();
+            }
+
+            if (this.tintButton.isDown) {
+                this.tint = Math.random() * 0xffffff;
             }
 
             if (this.pauseButton.isDown)

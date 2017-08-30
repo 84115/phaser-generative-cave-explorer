@@ -24,17 +24,9 @@ export default class TilemapState extends Phaser.State
 
         this.layer.debug = true;
 
-        // this.map.setCollisionBetween(123, 123);
-        // this.map.setCollisionBetween(49);
         this.map.setCollisionByExclusion([3, 49]);
 
-        // var water = this.map.searchTileIndex(89);
-        // water.collideDown = false;
-        // water.collideUp = false;
-        // water.collideLeft = false;
-        // water.collideRight = false;
-
-        this.player = new Player(this.game, 0, 3000, 'dude_sheet');
+        this.player = new Player(this.game, 0, 0, 'dude_sheet');
 
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
     }
@@ -42,12 +34,6 @@ export default class TilemapState extends Phaser.State
     update()
     {
         this.game.physics.arcade.collide(this.player, this.layer);
-        this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
-    }
-
-    render()
-    {
-
     }
 
 }

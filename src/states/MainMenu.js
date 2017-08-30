@@ -1,5 +1,6 @@
 import GameState from 'states/Game';
 import TilemapState from 'states/Tilemap';
+import TilemapMergedState from 'states/TilemapMerged';
 import TitleState from 'states/Title';
 import SpaceState from 'states/Space';
 
@@ -22,12 +23,17 @@ export default class MainMenuState extends Phaser.State
             this.state.start('Tilemap');
         });
 
-        this.createButton('Play Title', this.game.world.centerX, 300, 300, 100, function() {
+        this.createButton('Play Tilemap Merged', this.game.world.centerX, 300, 300, 100, function() {
+            this.state.add('TilemapMerged', TilemapMergedState);
+            this.state.start('TilemapMerged');
+        });
+
+        this.createButton('Play Title', this.game.world.centerX, 400, 300, 100, function() {
             this.state.add('Title', TitleState);
             this.state.start('Title');
         });
 
-        this.createButton('Space', this.game.world.centerX, 400, 300, 100, function() {
+        this.createButton('Space', this.game.world.centerX, 500, 300, 100, function() {
             this.state.add('Space', SpaceState);
             this.state.start('Space');
         });

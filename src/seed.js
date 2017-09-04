@@ -1,4 +1,4 @@
-var fill = function(min=1, max=8) {
+var fill = function (min=1, max=8) {
   var min = Math.ceil(min);
   var max = Math.floor(max);
 
@@ -17,7 +17,10 @@ var latest = grid.map(function(row) {
 		var cell_rows = '';
 
 		cell_rows = fs.readFileSync('static/assets/tile/alt-'+cell+'.csv', 'utf8');
-		cell_rows = cell_rows.slice(0, -1);
+		// if (cell_rows.indexOf('\n') !== -1)
+		// cell_rows = cell_rows.slice(0, -1);
+		cell_rows = cell_rows.replace(/\n$/, '');
+		// console.log('ROW', cell_rows);
 		// cell_rows = cell_rows.replace('\n', '_\n');
 		cell_rows = cell_rows.split('\n');
 		// cell_rows = cell_rows.join();
@@ -47,36 +50,16 @@ console.log(latest);
 
 
 
+fs.writeFileSync('src/seed.csv', (function() {
 
+	var stringy = '';
 
-// content of index.js
-const http = require('http');
-const port = 3003;
+	for (var i = 0; i < latest.length; i++) {
+		for (var j = 0; j < latest[i].length; j++) {
+			stringy += latest[i][j] + '\n';
+		}
+	}
 
-const requestHandler = function(request, response) {
-    // response.setHeader('Content-disposition', 'attachment; filename=seed.csv');
-    // response.writeHead(200, { 'Content-Type': 'text/csv' });
+	return stringy.toString();
 
-    var stringy = '';
-
-    for (var i = 0; i < latest.length; i++) {
-    	for (var j = 0; j < latest[i].length; j++) {
-    		stringy += latest[i][j] + '\\n';
-    	}
-    	// stringy += latest[i].join() + ',\n';
-
-    	// stringy += latest[i].join() + ',\\n';
-    }
-
-    response.end(stringy);
-};
-
-const server = http.createServer(requestHandler);
-
-server.listen(port, (err) => {  
-  if (err) {
-    return console.log('something bad happened', err);
-  }
-
-  console.log(`server is listening on ${port}`);
-});
+})(), 'utf8');

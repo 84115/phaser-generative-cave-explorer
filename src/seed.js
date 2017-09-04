@@ -6,60 +6,62 @@ var fill = function (min=1, max=8) {
 }
 
 var grid = [
-    [1,1,1],
-    [2,2,2],
+    [1,2],
+    [1,2],
 ];
 
 fs = require('fs');
 
-var latest = grid.map(function(row) {
+var tilemap = grid.map(function(row) {
 	return row.map(function(cell) {
-		var cell_rows = '';
+		var ccc = fs
+			.readFileSync('static/assets/tile/alt-'+cell+'.csv', 'utf8')
+			.replace(/\n$/, '')
+			.split('\n')
+			.map(function(x) {
+				return x.split(',');
+			});
 
-		cell_rows = fs.readFileSync('static/assets/tile/alt-'+cell+'.csv', 'utf8');
-		// if (cell_rows.indexOf('\n') !== -1)
-		// cell_rows = cell_rows.slice(0, -1);
-		cell_rows = cell_rows.replace(/\n$/, '');
-		// console.log('ROW', cell_rows);
-		// cell_rows = cell_rows.replace('\n', '_\n');
-		cell_rows = cell_rows.split('\n');
-		// cell_rows = cell_rows.join();
-		// cell_rows = cell_rows.replace('_', '\n');
-		// cell_rows+= '\n';
-
-		// cell_rows.push('\n');
-
-		return cell_rows;
+		console.log(ccc);
+		return ccc;
 	});
 });
 
-console.log(latest);
-console.log('');
-var latest = latest.map(function(row) {
-	for (var i = 0; i < row.length; i++) {
-		for (var j = 0; j < row[i].length; j++) {
-			row[i][j] = row[i][i];
-		}
+console.log(tilemap);
 
-	}
+// tilemap
+// [w]          = 
+// [w][x]       = 
+// [w][x][y]    = 
+// [w][x][y][z] = 
 
-	return row;
-});
-console.log('');
-console.log(latest);
+var row_height = tilemap.length;
+var row_width = tilemap[0].length;
 
+var cell_height = tilemap[0][0].length;
+var cell_width = tilemap[0][0][0].length;
 
+var total_height = cell_height * row_height;
+var total_width = cell_width * row_width;
 
-fs.writeFileSync('src/seed.csv', (function() {
+console.log(row_height, row_width);
+console.log(cell_height, cell_width);
+console.log(total_height, total_width);
 
-	var stringy = '';
+var csv = "";
+// load row 1 THEN
+// load cell 1 and then line 1 and print it
+// load cell X and then line 1 and print it
+// load cell 2 and then line 2 and print it
+// load cell X and then line 2 and print it...
+// load row 2 THEN
+// load cell 1 and then line 1 and print it
+// load cell X and then line 1 and print it
+// load cell 2 and then line 2 and print it
+// load cell X and then line 2 and print it...
+// ...Fin?
+// 
 
-	for (var i = 0; i < latest.length; i++) {
-		for (var j = 0; j < latest[i].length; j++) {
-			stringy += latest[i][j] + '\n';
-		}
-	}
+console.log(csv);
 
-	return stringy.toString();
-
-})(), 'utf8');
+// fs.writeFileSync('src/seed.csv', csv, 'utf8');

@@ -34,7 +34,7 @@ export default class TilemapMergedState extends Phaser.State
         this.player.body.gravity.y = 200;
         this.player.body.maxVelocity.y = 5000;
 
-        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER);
+        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER, 0.1, 0.1);
 
         // this.map.setTileIndexCallback(26, hitCoin, this);
 

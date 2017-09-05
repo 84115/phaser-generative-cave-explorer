@@ -1,4 +1,4 @@
-var fill = function (min=1, max=8) {
+var fill = function (min=1, max=11) {
   var min = Math.ceil(min);
   var max = Math.floor(max);
 
@@ -7,7 +7,7 @@ var fill = function (min=1, max=8) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var range = function (start=1, edge=8, step=1) {
+var range = function (start=1, edge=11, step=1) {
 	// If only one number was passed in make it the edge and 0 the start.
 	if (arguments.length == 1) {
 		edge = start;
@@ -43,9 +43,9 @@ var grid = [
 
     // [1,2,3],
     // [4,5,6],
-    // [7,8,9],
+    // [7,11,9],
 
-    // [8,7,1,3,1,1,1,1,1,1,1,1,1,1,1,1],
+    // [11,7,1,3,1,1,1,1,1,1,1,1,1,1,1,1],
     // [4,1,5,2,1,1,1,1,1,1,1,1,1,1,1,1],
     // [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     // [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -84,7 +84,7 @@ var range = (x=0, y=1) => {
 
 var path = file => 'static/assets/tile/omega-' + file + '.csv';
 
-var tiles = range(1, 8).map(tile => fs.readFileSync(path(tile), 'utf8'));
+var tiles = range(1, 11).map(tile => fs.readFileSync(path(tile), 'utf8'));
 
 var csvToArray = function(cell) {
 	return tiles[cell]

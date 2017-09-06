@@ -23,6 +23,7 @@ export default class Player extends Dude
         this.animations.add('turn', [4], 20, true);
         this.animations.add('right', [5, 6, 7, 8], 9, true);
         this.animations.add('idle', [4], 20);
+        this.control_mode = 'default';
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -47,7 +48,7 @@ export default class Player extends Dude
 
         this.tintButton = this.game.input.keyboard.addKey(Phaser.KeyCode.T);
 
-        this.pauseButton = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
+        this.ladderButton = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
 
         this.text = new RainbowText(this.game, 12, 12, this.health);
 
@@ -58,34 +59,25 @@ export default class Player extends Dude
 
     update()
     {
+        console.log(this.control_mode);
+
         if (this.alive)
         {
-            if (this.upKey.isDown && (this.body.blocked.down || this.body.touching.down))
+            if (this.ladderButton.isDown)
             {
-                if (this.game.time.now)
-                {
-                    this.body.velocity.y = -500;
-                    this.health--;
-                    this.text.setText(this.health);
-                }
+                this.control_mode = 'climb';
+            }
+            else {
+                this.control_mode = 'default';
             }
 
-            if (this.leftKey.isDown)
+            if (this.control_mode == 'climb')
             {
-                this.setAnimation('left');
-                this.body.velocity.x = -125;
-                this.x--;
-            }
-            else if (this.rightKey.isDown)
-            {
-                this.setAnimation('right');
-                this.body.velocity.x = 125;
-                this.x++;
+                this.controlsClimb();
             }
             else
             {
-                this.setAnimation('idle');
-                this.body.velocity.x = 0;
+                this.controlsMovement();
             }
 
             if (this.cursors.up.isDown) {
@@ -129,18 +121,6 @@ export default class Player extends Dude
             if (this.tintButton.isDown) {
                 this.tint = Math.random() * 0xffffff;
             }
-
-            if (this.pauseButton.isDown)
-            {
-                if (this.game.physics.arcade.isPaused == true)
-                {    
-                    this.game.physics.arcade.isPaused = false;
-                }
-                else
-                {
-                    this.game.physics.arcade.isPaused = true;
-                }
-            }
         }
         else {
             if (this.resetButton.isDown) {
@@ -172,4 +152,59 @@ export default class Player extends Dude
         }
     }
 
+    controlsMovement()
+    {
+        this.body.allowGravity = true;
+        this.body.gravity.y = 500;
+
+        if (this.upKey.isDown && (this.body.blocked.down || this.body.touching.down))
+        {
+            if (this.game.time.now)
+            {
+                this.body.velocity.y = -500;
+                this.health--;
+                this.text.setText(this.health);
+            }
+        }
+
+        if (this.leftKey.isDown)
+        {
+            this.setAnimation('left');
+            this.body.velocity.x = -125;
+            this.x--;
+        }
+        else if (this.rightKey.isDown)
+        {
+            this.setAnimation('right');
+            this.body.velocity.x = 125;
+            this.x++;
+        }
+        else
+        {
+            this.setAnimation('idle');
+            this.body.velocity.x = 0;
+        }
+    }
+
+    controlsClimb()
+    {
+        this.body.allowGravity = false;
+        this.body.velocity.y = 0;
+        this.body.checkCollision.up = true;
+        this.body.checkCollision.down = true;
+
+        if (this.upKey.isDown)
+        {
+            this.y = this.y - (125 / 42);
+        }
+        else if (this.downKey.isDown)
+        {
+            this.y = this.y + (125 / 42) * 2;
+        }
+        else
+        {
+            this.setAnimation('idle');
+            this.body.velocity.x = 0;
+        }
+    }
 }

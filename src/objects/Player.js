@@ -59,10 +59,10 @@ export default class Player extends Dude
 
     update()
     {
-        console.log(this.control_mode);
-
         if (this.alive)
         {
+            console.log('Player.......', this.control_mode);
+
             if (this.ladderButton.isDown)
             {
                 this.control_mode = 'climb';

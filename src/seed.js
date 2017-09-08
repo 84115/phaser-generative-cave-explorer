@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var fill = function (min=1, max=14) {
+var fill = function (min=1, max=17) {
 	var min = Math.ceil(min);
 	var max = Math.floor(max);
 
@@ -19,7 +19,7 @@ var range = (x=0, y=1) => {
 
 var path = file => 'static/assets/tile/omega-' + file + '.csv';
 
-var tiles = range(1, 14).map(tile => fs.readFileSync(path(tile), 'utf8'));
+var tiles = range(0, 17).map(tile => fs.readFileSync(path(tile), 'utf8'));
 
 var csvToArray = function(cell) {
 	return tiles[cell]
@@ -33,18 +33,18 @@ var csvToArray = function(cell) {
 
 
 var tilemap = [
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
-    [fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill()],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
 ].map(row => row.map(csvToArray));
 
 var tilemap_height = tilemap.length;
@@ -63,7 +63,7 @@ for (var i = 0; i < tilemap_height; i++) {
 			csv += tilemap[i][k][j].toString();
 
 			if (k == tilemap_width-1) {
-				csv += '\\n';
+				csv += '\n';
 			}
 			else {
 				csv += ',';
@@ -83,4 +83,4 @@ for (var i = 0; i < tilemap_height; i++) {
 
 
 
-fs.writeFileSync('src/seed.csv', csv, 'utf8');
+fs.writeFileSync(path('compiled'), csv, 'utf8');

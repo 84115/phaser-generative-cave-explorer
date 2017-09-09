@@ -61,15 +61,15 @@ export default class Player extends Dude
     {
         if (this.alive)
         {
-            console.log('Player.......', this.control_mode);
+            // console.log('Player.......', this.control_mode);
 
-            if (this.ladderButton.isDown)
-            {
-                this.control_mode = 'climb';
-            }
-            else {
-                this.control_mode = 'default';
-            }
+            // if (this.ladderButton.isDown)
+            // {
+            //     this.control_mode = 'climb';
+            // }
+            // else {
+            //     this.control_mode = 'default';
+            // }
 
             if (this.control_mode == 'climb')
             {
@@ -200,6 +200,18 @@ export default class Player extends Dude
         else if (this.downKey.isDown)
         {
             this.y = this.y + (125 / 42) * 2;
+        }
+        else if (this.leftKey.isDown)
+        {
+            this.setAnimation('left');
+            this.body.velocity.x = -125;
+            this.x--;
+        }
+        else if (this.rightKey.isDown)
+        {
+            this.setAnimation('right');
+            this.body.velocity.x = 125;
+            this.x++;
         }
         else
         {

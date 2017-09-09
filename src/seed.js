@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var fill = function (min=1, max=17) {
+var fill = function (min=1, max=19) {
 	var min = Math.ceil(min);
 	var max = Math.floor(max);
 
@@ -19,7 +19,7 @@ var range = (x=0, y=1) => {
 
 var path = file => 'static/assets/tile/omega-' + file + '.csv';
 
-var tiles = range(0, 17).map(tile => fs.readFileSync(path(tile), 'utf8'));
+var tiles = range(0, 19).map(tile => fs.readFileSync(path(tile), 'utf8'));
 
 var csvToArray = function(cell) {
 	return tiles[cell]
@@ -45,6 +45,19 @@ var tilemap = [
     [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
     [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,18,19,17,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ].map(row => row.map(csvToArray));
 
 var tilemap_height = tilemap.length;

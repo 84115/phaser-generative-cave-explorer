@@ -42,14 +42,18 @@ export default class TilemapMergedState extends Phaser.State
         //     this.map.replace(419, 351);
         //     // this.map.removeTile(9, 5, this.layer).destroy();
         // }, this);
+
+        this.prev = 0;
     }
 
     update()
     {
+        var $this = this;
+
         this.game.physics.arcade.collide(this.player, this.layer);
 
         this.game.physics.arcade.overlap(this.player, this.layer, function(player, layer) {
-            console.log('TilemapMerged', player.control_mode);
+            console.log('TilemapMerged', layer.index, player.control_mode, $this.prev);
 
             if (layer.index == 355) {
                 player.control_mode = 'climb';
@@ -57,6 +61,8 @@ export default class TilemapMergedState extends Phaser.State
             else {
                 player.control_mode = 'default';
             }
+
+            $this.prev = layer.index;
         });
 
         this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);

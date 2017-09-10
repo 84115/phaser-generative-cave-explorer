@@ -1,6 +1,8 @@
 import Player from 'objects/Player';
 import CAVE from 'enums/cave';
 
+console.log(CAVE);
+
 export default class TilemapMergedState extends Phaser.State
 {
 
@@ -17,6 +19,7 @@ export default class TilemapMergedState extends Phaser.State
         window.map = this.map;
         //  Now add in the tileset
         this.map.addTilesetImage('tiles');
+        this.map.tint = Math.random() * 0xffffff;
 
         //  Create our layer
         this.layer = this.map.createLayer(0);
@@ -37,7 +40,7 @@ export default class TilemapMergedState extends Phaser.State
         this.player = new Player(this.game, ((16*32)*8), ((16*32)*8), 'dude_sheet');
         window.player = this.player;
 
-        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER, 0.1, 0.1);
+        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
         // this.map.setTileIndexCallback(26, hitCoin, this);
 
@@ -59,14 +62,14 @@ export default class TilemapMergedState extends Phaser.State
         this.game.physics.arcade.overlap(this.player, this.layer, function(player, layer) {
             console.log('TilemapMerged', layer.index, player.control_mode, $this.prev);
 
-            if (layer.index == 355) {
+            if (layer.index == CAVE.LADDER) {
                 player.control_mode = 'climb';
             }
             else {
                 player.control_mode = 'default';
             }
 
-            $this.prev = layer.index;
+            // $this.prev = layer.index;
         });
 
         this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);

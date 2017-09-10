@@ -1,4 +1,5 @@
 import Player from 'objects/Player';
+import CAVE from 'enums/cave';
 
 export default class TilemapMergedState extends Phaser.State
 {
@@ -26,8 +27,11 @@ export default class TilemapMergedState extends Phaser.State
         // this.layer.debug = true;
 
         this.map.setCollisionByExclusion([
-            351, 355, 356, 419, 420, // ROCK
-            72, 78, // SPACE?
+            CAVE.BLANK,
+            CAVE.LADDER,
+            CAVE.WATER.DEFAULT, CAVE.WATER.CEILING,
+            CAVE.STONE.BREAKABLE,
+            CAVE.BRICK
         ], true);
 
         this.player = new Player(this.game, ((16*32)*8), ((16*32)*8), 'dude_sheet');

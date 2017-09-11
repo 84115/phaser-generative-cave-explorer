@@ -79,7 +79,7 @@ export default {
     url: 'dude_sheet.png',
     margin: 0,
     spacing: 0,
-    frameMax: 8,
+    frameMax: 10,
     frameWidth: 32,
     frameHeight: 48
   },

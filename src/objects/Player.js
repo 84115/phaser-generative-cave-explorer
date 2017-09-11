@@ -23,6 +23,7 @@ export default class Player extends Dude
         this.animations.add('turn', [4], 20, true);
         this.animations.add('right', [5, 6, 7, 8], 9, true);
         this.animations.add('idle', [4], 20);
+        this.animations.add('climb', [9], 9, true);
         this.control_mode = 'default';
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -193,6 +194,8 @@ export default class Player extends Dude
         this.body.checkCollision.up = true;
         this.body.checkCollision.down = true;
 
+        this.setAnimation('climb');
+
         if (this.upKey.isDown)
         {
             this.y = this.y - (125 / 42);
@@ -201,21 +204,19 @@ export default class Player extends Dude
         {
             this.y = this.y + (125 / 42) * 2;
         }
-        else if (this.leftKey.isDown)
+
+        if (this.leftKey.isDown)
         {
-            this.setAnimation('left');
             this.body.velocity.x = -125;
             this.x--;
         }
         else if (this.rightKey.isDown)
         {
-            this.setAnimation('right');
             this.body.velocity.x = 125;
             this.x++;
         }
         else
         {
-            this.setAnimation('idle');
             this.body.velocity.x = 0;
         }
     }

@@ -19,7 +19,6 @@ export default class TilemapMergedState extends Phaser.State
         window.map = this.map;
         //  Now add in the tileset
         this.map.addTilesetImage('tiles');
-        this.map.tint = Math.random() * 0xffffff;
 
         //  Create our layer
         this.layer = this.map.createLayer(0);

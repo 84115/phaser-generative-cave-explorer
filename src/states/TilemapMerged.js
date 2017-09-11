@@ -60,7 +60,7 @@ export default class TilemapMergedState extends Phaser.State
         this.game.physics.arcade.collide(this.player, this.layer);
 
         this.game.physics.arcade.overlap(this.player, this.layer, function(player, layer) {
-            console.log('TilemapMerged', layer.index, player.control_mode, $this.prev);
+            // console.log('TilemapMerged', layer.index, player.control_mode, $this.prev);
 
             if (layer.index == CAVE.LADDER) {
                 player.control_mode = 'climb';

@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var fill = function (min=1, max=22) {
+var fill = function (min=1, max=24) {
 	var min = Math.ceil(min);
 	var max = Math.floor(max);
 
@@ -19,7 +19,7 @@ var range = (x=0, y=1) => {
 
 var path = file => 'static/assets/tile/omega-' + file + '.csv';
 
-var tiles = range(0, 22).map(tile => fs.readFileSync(path(tile), 'utf8'));
+var tiles = range(0, 24).map(tile => fs.readFileSync(path(tile), 'utf8'));
 
 var csvToArray = function(cell) {
 	return tiles[cell]
@@ -31,7 +31,7 @@ var csvToArray = function(cell) {
 
 
 
-
+// 196 unique tiles with border
 var tilemap = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),fill(),0],

@@ -22,6 +22,7 @@ export default class TilemapMergedState extends Phaser.State
 
         //  Create our layer
         this.layer = this.map.createLayer(0);
+        // this.layer.tint = Math.random() * 0xffffff;
 
         //  Resize the world
         this.layer.resizeWorld();

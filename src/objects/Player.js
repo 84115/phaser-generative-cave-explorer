@@ -76,9 +76,13 @@ export default class Player extends Dude
             {
                 this.controlsClimb();
             }
+            else if (this.control_mode == 'swim')
+            {
+                this.controlsSwim();
+            }
             else
             {
-                this.controlsMovement();
+                this.controlsDefault();
             }
 
             if (this.cursors.up.isDown) {
@@ -94,7 +98,7 @@ export default class Player extends Dude
             }
             else if (this.cursors.down.isDown) {
                 if (this.cursors.left.isDown) {
-                    this.weapon.fireAngle = Phaser.ANGLE_SOUTH_WEST;
+                    this.weapon.fireAngle = Phaser.ANGLE_SOUTHdw_WEST;
                 }
                 else if (this.cursors.right.isDown) {
                     this.weapon.fireAngle = Phaser.ANGLE_SOUTH_EAST;
@@ -153,7 +157,7 @@ export default class Player extends Dude
         }
     }
 
-    controlsMovement()
+    controlsDefault()
     {
         this.body.allowGravity = true;
         this.body.gravity.y = 500;
@@ -193,6 +197,7 @@ export default class Player extends Dude
         this.body.velocity.y = 0;
         this.body.checkCollision.up = true;
         this.body.checkCollision.down = true;
+        this.body.bounce.y = 0;
 
         this.setAnimation('climb');
 
@@ -204,8 +209,7 @@ export default class Player extends Dude
         {
             this.y = this.y + (125 / 42) * 2;
         }
-
-        if (this.leftKey.isDown)
+        else if (this.leftKey.isDown)
         {
             this.body.velocity.x = -125;
             this.x--;
@@ -220,4 +224,39 @@ export default class Player extends Dude
             this.body.velocity.x = 0;
         }
     }
+
+    controlsSwim()
+    {
+        this.body.allowGravity = true;
+        this.body.gravity.y = 100;
+        this.body.bounce.y = 0.2;
+        this.body.bounce.x = 0.2;
+
+        if (this.upKey.isDown)
+        {
+            if (this.game.time.now)
+            {
+                this.body.velocity.y = -50;
+            }
+        }
+
+        if (this.leftKey.isDown)
+        {
+            this.setAnimation('left');
+            this.body.velocity.x = -50;
+            this.x--;
+        }
+        else if (this.rightKey.isDown)
+        {
+            this.setAnimation('right');
+            this.body.velocity.x = 50;
+            this.x++;
+        }
+        else
+        {
+            this.setAnimation('idle');
+            this.body.velocity.x = 0;
+        }
+    }
+
 }

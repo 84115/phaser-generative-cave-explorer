@@ -1,8 +1,6 @@
 import Player from 'objects/Player';
 import CAVE from 'enums/cave';
 
-console.log(CAVE);
-
 export default class TilemapMergedState extends Phaser.State
 {
 
@@ -14,6 +12,9 @@ export default class TilemapMergedState extends Phaser.State
 
     create()
     {
+        var tint;
+        // tint = Math.random() * 0xffffff;
+
         //  Because we're loading CSV map data we have to specify the tile size here or we can't render it
         this.map = this.game.add.tilemap('map', 32, 32);
         window.map = this.map;
@@ -22,7 +23,7 @@ export default class TilemapMergedState extends Phaser.State
 
         //  Create our layer
         this.layer = this.map.createLayer(0);
-        // this.layer.tint = Math.random() * 0xffffff;
+        if (tint) this.layer.tint = tint;
 
         //  Resize the world
         this.layer.resizeWorld();
@@ -38,7 +39,8 @@ export default class TilemapMergedState extends Phaser.State
         ], true);
 
         this.player = new Player(this.game, ((16*32)*8), ((16*32)*8), 'dude_sheet');
-        window.player = this.player;
+
+        if (tint) this.player.tint = tint;
 
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
@@ -55,21 +57,22 @@ export default class TilemapMergedState extends Phaser.State
 
     update()
     {
-        var $this = this;
 
         this.game.physics.arcade.collide(this.player, this.layer);
 
         this.game.physics.arcade.overlap(this.player, this.layer, function(player, layer) {
-            // console.log('TilemapMerged', layer.index, player.control_mode, $this.prev);
-
             if (layer.index == CAVE.LADDER) {
+                console.log(1);
                 player.control_mode = 'climb';
             }
+            else if (layer.index == CAVE.WATER.DEFAULT || layer.index == CAVE.WATER.CEILING) {
+                console.log(2);
+                player.control_mode = 'swim';
+            }
             else {
+                console.log(3);
                 player.control_mode = 'default';
             }
-
-            // $this.prev = layer.index;
         });
 
         this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);

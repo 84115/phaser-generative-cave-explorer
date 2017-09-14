@@ -62,15 +62,12 @@ export default class TilemapMergedState extends Phaser.State
 
         this.game.physics.arcade.overlap(this.player, this.layer, function(player, layer) {
             if (layer.index == CAVE.LADDER) {
-                console.log(1);
                 player.control_mode = 'climb';
             }
             else if (layer.index == CAVE.WATER.DEFAULT || layer.index == CAVE.WATER.CEILING) {
-                console.log(2);
                 player.control_mode = 'swim';
             }
             else {
-                console.log(3);
                 player.control_mode = 'default';
             }
         });

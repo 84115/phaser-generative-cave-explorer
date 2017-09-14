@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.07.17" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" source="omega.tsx"/>
  <layer name="Tile Layer 1" width="16" height="16">
   <data encoding="csv">
@@ -8,7 +8,7 @@
 352,352,352,352,352,352,352,352,352,352,352,352,352,352,352,352,
 352,352,352,352,352,352,352,352,352,352,352,352,352,352,352,352,
 352,352,352,352,352,352,352,352,352,352,352,352,352,352,352,352,
-353,354,354,354,354,354,354,354,354,354,354,354,354,354,354,353,
+353,355,354,354,355,354,354,354,355,354,354,354,355,354,355,353,
 417,352,352,352,352,352,352,352,352,352,352,352,352,352,352,417,
 485,352,352,352,352,352,352,352,352,352,352,352,352,352,352,483,
 352,352,352,352,352,352,352,352,352,352,352,352,352,352,352,352,

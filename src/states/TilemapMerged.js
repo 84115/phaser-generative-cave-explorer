@@ -8,10 +8,17 @@ export default class TilemapMergedState extends Phaser.State
         // this.game.load.tilemap('map', 'tile/omega-3.csv', null, Phaser.Tilemap.CSV);
         this.game.load.tilemap('map', 'tile/omega-compiled.csv', null, Phaser.Tilemap.CSV);
         this.game.load.image('tiles', 'tile/omega.png');
+
+        this.game.stage.backgroundColor = '#000';
     }
 
     create()
     {
+        // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+        this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+        // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.NO_SCALE;
+        this.game.input.onDown.add(this.goFull, this);
+
         var tint;
         // tint = Math.random() * 0xffffff;
 
@@ -38,7 +45,7 @@ export default class TilemapMergedState extends Phaser.State
             CAVE.BRICK
         ], true);
 
-        this.player = new Player(this.game, ((16*32)*8), ((16*32)*8), 'dude_sheet');
+        this.player = new Player(this.game, this.getCentre(), this.getCentre(), 'dude_sheet');
 
         if (tint) this.player.tint = tint;
 
@@ -53,6 +60,28 @@ export default class TilemapMergedState extends Phaser.State
         // }, this);
 
         this.prev = 0;
+    }
+
+    getCentre()
+    {
+        let tile_pixels = 32;
+        let tile_count = 16;
+        let section = (tile_count * tile_pixels);
+        let center = (section * (tile_count / 2)) + section / 2;
+
+        return center;
+    }
+
+    goFull()
+    {    
+        if (this.game.scale.isFullScreen)
+        {
+            this.game.scale.stopFullScreen();
+        }
+        else
+        {
+            this.game.scale.startFullScreen(false);
+        }
     }
 
     update()

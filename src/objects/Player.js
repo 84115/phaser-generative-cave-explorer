@@ -29,10 +29,12 @@ export default class Player extends Dude
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
         // Creates 30 bullets, using the 'star' graphic
-        this.weapon = this.game.add.weapon(1, 'star');
+        this.weapon = this.game.add.weapon(20, 'star');
 
         // The bullet will be automatically killed when it leaves the world bounds
-        this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        // this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        this.weapon.bulletLifespan = 5000;
+        this.weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
 
         // The speed at which the bullet is fired
         this.weapon.bulletSpeed = 500;
@@ -147,6 +149,7 @@ export default class Player extends Dude
         this.leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         this.downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
         this.rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        this.eKey = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
     }
 
     setAnimation(animation='idle')
@@ -160,15 +163,26 @@ export default class Player extends Dude
     controlsDefault()
     {
         this.body.allowGravity = true;
-        this.body.gravity.y = 500;
+        this.body.gravity.y = 800;
 
-        if (this.upKey.isDown && (this.body.blocked.down || this.body.touching.down))
+        if (this.body.blocked.down || this.body.touching.down)
         {
-            if (this.game.time.now)
+            if (this.upKey.isDown)
             {
-                this.body.velocity.y = -500;
-                this.health--;
-                this.text.setText(this.health);
+                if (this.game.time.now)
+                {
+                    this.body.velocity.y = -800;
+                    this.health--;
+                    this.text.setText(this.health);
+                }
+            }
+            else if (this.eKey.isDown) {
+                if (this.game.time.now)
+                {
+                    this.body.velocity.y = -275;
+                    this.health--;
+                    this.text.setText(this.health);
+                }
             }
         }
 

@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var fill = function (min=1, max=24) {
+var fill = function (min=1, max=30) {
 	var min = Math.ceil(min);
 	var max = Math.floor(max);
 
@@ -19,7 +19,7 @@ var range = (x=0, y=1) => {
 
 var path = file => 'static/assets/tile/omega-' + file + '.csv';
 
-var tiles = range(0, 24).map(tile => fs.readFileSync(path(tile), 'utf8'));
+var tiles = range(0, 30).map(tile => fs.readFileSync(path(tile), 'utf8'));
 
 var csvToArray = function(cell) {
 	return tiles[cell]

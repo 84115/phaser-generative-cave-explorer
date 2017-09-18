@@ -9,7 +9,8 @@ export default Object.freeze({
     },
     STONE: {
         DEFAULT: 418,
-        BREAKABLE: 419
+        BREAKABLE: 419,
+        FALLABLE: 359
     },
     WATER: {
         DEFAULT: 420,

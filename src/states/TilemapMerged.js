@@ -1,5 +1,6 @@
 import Player from 'objects/Player';
 import TileBreakable from 'objects/TileBreakable';
+import TileFallable from 'objects/TileFallable';
 import CAVE from 'enums/cave';
 
 export default class TilemapMergedState extends Phaser.State
@@ -45,6 +46,7 @@ export default class TilemapMergedState extends Phaser.State
 
         // Replace Breakable Tile With Sprite
         this.breakable = this.game.add.group();
+        this.fallable = this.game.add.group();
 
         this.map.forEach(this.replaceTilesWithSprite, this);
 
@@ -142,11 +144,16 @@ export default class TilemapMergedState extends Phaser.State
 
     replaceTilesWithSprite(tile)
     {
-        if (tile.index == CAVE.STONE.BREAKABLE) {
+        if (tile.index == CAVE.STONE.BREAKABLE)
+        {
             tile.alpha = 0.5;
 
             this.breakable.add(new TileBreakable(this.game, this.toTileCoordinate(tile.x), this.toTileCoordinate(tile.y), 'stone-breakable'));
         }
+        // else if (tile.index == CAVE.STONE.FALLABLE)
+        // {
+        //     this.fallable.add(new TileFallable(this.game, this.toTileCoordinate(tile.x), this.toTileCoordinate(tile.y), 'stone-breakable'));
+        // }
     }
 
 }

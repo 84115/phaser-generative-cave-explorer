@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" tiledversion="2017.07.17" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" source="omega.tsx"/>
  <layer name="Tile Layer 1" width="16" height="16">
   <data encoding="csv">
-417,417,417,419,417,417,417,417,417,420,417,419,356,419,417,417,
+417,417,417,419,417,417,417,417,417,545,417,419,356,419,417,417,
 481,481,481,481,417,417,481,417,417,417,417,419,356,419,417,481,
 352,352,352,352,481,481,352,481,481,417,417,419,356,419,481,352,
 352,352,352,352,352,352,352,352,352,481,481,352,356,352,352,352,

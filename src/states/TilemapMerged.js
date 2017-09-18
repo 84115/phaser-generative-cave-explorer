@@ -1,4 +1,5 @@
 import Player from 'objects/Player';
+import TileBreakable from 'objects/TileBreakable';
 import CAVE from 'enums/cave';
 
 export default class TilemapMergedState extends Phaser.State
@@ -44,6 +45,25 @@ export default class TilemapMergedState extends Phaser.State
             CAVE.STONE.BREAKABLE,
             CAVE.BRICK
         ], true);
+
+
+
+
+
+        this.breakable = this.game.add.group();
+
+        this.map.forEach(function(tile) {
+            if (tile.index == CAVE.STONE.BREAKABLE) {
+                tile.alpha = 0.5;
+
+                // var x = new TileBreakable(this.game, tile.x * 32, tile.y * 32, 'stone-breakable');
+                this.breakable.add(new TileBreakable(this.game, tile.x * 32, tile.y * 32, 'stone-breakable'));
+            }
+        }, this);
+
+
+
+
 
         this.player = new Player(this.game, this.getCentre(), this.getCentre(), 'dude_sheet');
 
@@ -100,6 +120,17 @@ export default class TilemapMergedState extends Phaser.State
                 player.control_mode = 'default';
             }
         });
+
+        this.game.physics.arcade.collide(this.player, this.breakable);
+
+        if (this.player.fireButton.isDown) {
+            this.game.physics.arcade.overlap(this.player.weapon.bullets, this.breakable, function(a,b){
+                // a.kill();
+                b.destroy();
+
+                this.game.camera.shake(0.025, 125);
+            }, null, this);
+        }
 
         this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
     }

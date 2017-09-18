@@ -88,8 +88,13 @@ export default {
     type: 'image'
   },
   {
+    key: 'stone-breakable',
+    type: 'image'
+  },
+  {
     key: 'phaser',
     type: 'image'
+  }
   // }, {
   //   //  Example: Add an image.
   //   //
@@ -235,5 +240,5 @@ export default {
   //   type: 'atlasJSONHash',
   //   atlasURL: 'example.json',
   //   textureURL: 'example.png'
-  }]
+  ]
 };

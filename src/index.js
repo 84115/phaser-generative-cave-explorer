@@ -8,7 +8,8 @@ class Game extends Phaser.Game
     {
         // 32*16 = 512 ++ 32*32 = ...
         // super(800, 600, Phaser.AUTO, 'content', null);
-        super(32*24, 32*16, Phaser.AUTO, 'content', null);
+        // super(32*24, 32*16, Phaser.AUTO, 'content', null);
+        super(32*16, 32*16, Phaser.AUTO, 'content', null);
         // super(32*16, 32*16, Phaser.AUTO, 'content', null);
 
         this.state.add('Boot', BootState);

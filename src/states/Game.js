@@ -65,11 +65,13 @@ export default class GameState extends Phaser.State
             platform.kill();
         }, null, this);
 
-        this.game.physics.arcade.overlap(this.player.weapon.bullets, this.enemy, function(bullet, platform) {
-            bullet.kill();
-            platform.kill();
-            this.game.camera.shake(0.05, 250);
-        }, null, this);
+        if (false) {
+            this.game.physics.arcade.overlap(this.player.weapon.bullets, this.enemy, function(bullet, platform) {
+                bullet.kill();
+                platform.kill();
+                this.game.camera.shake(0.05, 250);
+            }, null, this);
+        }
 
         this.game.physics.arcade.overlap(this.enemy.weapon.bullets, this.player, function(bullet, player) {
             bullet.kill();

@@ -5,8 +5,8 @@ import CAVE from 'enums/cave';
 export default class TilemapMergedState extends Phaser.State
 {
 
-    preload() {
-        // this.game.load.tilemap('map', 'tile/omega-3.csv', null, Phaser.Tilemap.CSV);
+    preload()
+    {
         this.game.load.tilemap('map', 'tile/omega-compiled.csv', null, Phaser.Tilemap.CSV);
         this.game.load.image('tiles', 'tile/omega.png');
 
@@ -15,71 +15,100 @@ export default class TilemapMergedState extends Phaser.State
 
     create()
     {
-        // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-        this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-        // this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.NO_SCALE;
-        this.game.input.onDown.add(this.goFull, this);
-
-        var tint;
-        // tint = Math.random() * 0xffffff;
-
-        //  Because we're loading CSV map data we have to specify the tile size here or we can't render it
+        // Because we're loading CSV map
+        // data we have to specify the tile
+        // size here or we can't render it
         this.map = this.game.add.tilemap('map', 32, 32);
-        window.map = this.map;
-        //  Now add in the tileset
+
+        // Now add in the tileset
         this.map.addTilesetImage('tiles');
 
-        //  Create our layer
+        // Create our layer
         this.layer = this.map.createLayer(0);
-        if (tint) this.layer.tint = tint;
 
-        //  Resize the world
+        // Resize the world
         this.layer.resizeWorld();
 
-        // this.layer.debug = true;
 
+
+        // Collisions
         this.map.setCollisionByExclusion([
             CAVE.BLANK,
             CAVE.LADDER,
-            CAVE.WATER.DEFAULT, CAVE.WATER.CEILING,
+            CAVE.WATER.DEFAULT,
+            CAVE.WATER.CEILING,
             CAVE.STONE.BREAKABLE,
             CAVE.BRICK
         ], true);
 
 
 
-
-
+        // Replace Breakable Tile With Sprite
         this.breakable = this.game.add.group();
 
-        this.map.forEach(function(tile) {
-            if (tile.index == CAVE.STONE.BREAKABLE) {
-                tile.alpha = 0.5;
-
-                // var x = new TileBreakable(this.game, tile.x * 32, tile.y * 32, 'stone-breakable');
-                this.breakable.add(new TileBreakable(this.game, tile.x * 32, tile.y * 32, 'stone-breakable'));
-            }
-        }, this);
+        this.map.forEach(this.replaceTilesWithSprite, this);
 
 
 
-
-
+        // Player
         this.player = new Player(this.game, this.getCentre(), this.getCentre(), 'dude_sheet');
 
-        if (tint) this.player.tint = tint;
 
+
+        // Fullscreen
+        this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.input.onDown.add(this.goFullscreen, this);
+
+
+
+        // Camera
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
-        // this.map.setTileIndexCallback(26, hitCoin, this);
 
-        // this.game.input.onDown.addOnce(function() {
-        //     console.log(this.map);
-        //     this.map.replace(419, 351);
-        //     // this.map.removeTile(9, 5, this.layer).destroy();
-        // }, this);
 
-        this.prev = 0;
+        // Debug
+        // this.layer.debug = true;
+    }
+
+    update()
+    {
+
+        this.game.physics.arcade.collide(this.player, this.layer);
+        this.game.physics.arcade.overlap(this.player, this.layer, this.overlapPlayerLayer);
+
+        this.game.physics.arcade.collide(this.player, this.breakable);
+
+        // Find a way to replace this?
+        // Maybe something like a isFiring
+        if (this.player.fireButton.isDown)
+        {
+            this.game.physics.arcade.overlap(this.player.weapon.bullets, this.breakable, this.overlapBulletBreakable, null, this);
+        }
+
+        this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
+    }
+
+    overlapPlayerLayer(player, layer)
+    {
+        if (layer.index == CAVE.LADDER)
+        {
+            player.control_mode = 'climb';
+        }
+        else if (layer.index == CAVE.WATER.DEFAULT || layer.index == CAVE.WATER.CEILING)
+        {
+            player.control_mode = 'swim';
+        }
+        else
+        {
+            player.control_mode = 'default';
+        }
+    }
+
+    overlapBulletBreakable(bullet, breakable)
+    {
+        breakable.destroy();
+
+        this.game.camera.shake(0.0125, 625);
     }
 
     getCentre()
@@ -92,7 +121,14 @@ export default class TilemapMergedState extends Phaser.State
         return center;
     }
 
-    goFull()
+    toTileCoordinate(coordinate)
+    {
+        let tile_pixels = 32;
+
+        return coordinate * tile_pixels;
+    }
+
+    goFullscreen()
     {    
         if (this.game.scale.isFullScreen)
         {
@@ -104,35 +140,13 @@ export default class TilemapMergedState extends Phaser.State
         }
     }
 
-    update()
+    replaceTilesWithSprite(tile)
     {
+        if (tile.index == CAVE.STONE.BREAKABLE) {
+            tile.alpha = 0.5;
 
-        this.game.physics.arcade.collide(this.player, this.layer);
-
-        this.game.physics.arcade.overlap(this.player, this.layer, function(player, layer) {
-            if (layer.index == CAVE.LADDER) {
-                player.control_mode = 'climb';
-            }
-            else if (layer.index == CAVE.WATER.DEFAULT || layer.index == CAVE.WATER.CEILING) {
-                player.control_mode = 'swim';
-            }
-            else {
-                player.control_mode = 'default';
-            }
-        });
-
-        this.game.physics.arcade.collide(this.player, this.breakable);
-
-        if (this.player.fireButton.isDown) {
-            this.game.physics.arcade.overlap(this.player.weapon.bullets, this.breakable, function(a,b){
-                // a.kill();
-                b.destroy();
-
-                this.game.camera.shake(0.025, 125);
-            }, null, this);
+            this.breakable.add(new TileBreakable(this.game, this.toTileCoordinate(tile.x), this.toTileCoordinate(tile.y), 'stone-breakable'));
         }
-
-        this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
     }
 
 }

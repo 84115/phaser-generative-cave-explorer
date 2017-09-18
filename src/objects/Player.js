@@ -33,8 +33,10 @@ export default class Player extends Dude
 
         // The bullet will be automatically killed when it leaves the world bounds
         // this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-        this.weapon.bulletLifespan = 1000;
+        this.weapon.bulletLifespan = 500;
         this.weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+        // this.weapon.bullets.allowGravity = false;
+        this.weapon.bullets.setAll('body.allowGravity', false);
 
         // The speed at which the bullet is fired
         this.weapon.bulletSpeed = 500;
@@ -45,7 +47,7 @@ export default class Player extends Dude
         // Tell the Weapon to track the 'player' Sprite
         // With no offsets from the position
         // But the 'true' argument tells the weapon to track sprite rotation
-        this.weapon.trackSprite(this, 32, 32, false);
+        this.weapon.trackSprite(this, 16, 32, false);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 

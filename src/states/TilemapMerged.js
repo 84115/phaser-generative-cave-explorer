@@ -68,8 +68,18 @@ export default class TilemapMergedState extends Phaser.State
 
 
 
+        // Rect
+        this.player.proximity = new Phaser.Rectangle(this.player.body.x, this.player.body.y, 32*4, 32*4);
+
+
+
         // Debug
         // this.layer.debug = true;
+    }
+
+    render()
+    {
+        this.game.debug.rectangle(this.player.proximity, '#33ff00', false);
     }
 
     update()
@@ -86,6 +96,9 @@ export default class TilemapMergedState extends Phaser.State
         {
             this.game.physics.arcade.overlap(this.player.weapon.bullets, this.breakable, this.overlapBulletBreakable, null, this);
         }
+
+        this.player.proximity.x = this.player.body.x - (32*2) + 8;
+        this.player.proximity.y = this.player.body.y - (32*2) + 8;
 
         this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
     }

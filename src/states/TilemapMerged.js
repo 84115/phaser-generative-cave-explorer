@@ -39,7 +39,8 @@ export default class TilemapMergedState extends Phaser.State
             CAVE.WATER.DEFAULT,
             CAVE.WATER.CEILING,
             CAVE.STONE.BREAKABLE,
-            CAVE.BRICK
+            CAVE.BRICK,
+            CAVE.POWERUP.DEFAULT
         ], true);
 
 
@@ -91,43 +92,45 @@ export default class TilemapMergedState extends Phaser.State
 
     update()
     {
+        let collide = this.game.physics.arcade.collide;
+        let overlap = this.game.physics.arcade.overlap;
+
         this.game.physics.arcade.collide(this.player, this.layer);
-        this.game.physics.arcade.overlap(this.player, this.layer, this.overlapPlayerLayer);
-
-        this.game.physics.arcade.overlap(this.proximity, this.layer, this.replaceTilesWithSprite, null, this);
-
         this.game.physics.arcade.collide(this.player, this.breakable);
         this.game.physics.arcade.collide(this.fallable, this.layer);
+        this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
 
-        // Find a way to replace this?
-        // Maybe something like a isFiring
-        // if (this.player.fireButton.isDown)
-        // {
-            this.game.physics.arcade.overlap(this.player.weapon.bullets, this.breakable, this.overlapBulletBreakable, null, this);
-        // }
+        this.game.physics.arcade.overlap(this.player, this.layer, this.overlapPlayerLayer);
+        this.game.physics.arcade.overlap(this.player.weapon.bullets, this.breakable, this.overlapBulletBreakable, null, this);
+        this.game.physics.arcade.overlap(this.proximity, this.layer, this.replaceTilesWithSprite, null, this);
 
         // this.proximity.x = this.player.x;
         // this.proximity.y = this.player.y;
         this.proximity.x = this.player.x - (32 * 2) - 16;
         this.proximity.y = this.player.y - (32 * 2) - 8/* + 16 + 8*/;
-
-        this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
     }
 
     overlapPlayerLayer(player, layer)
     {
-        if (layer.index == CAVE.LADDER)
-        {
-            player.control_mode = 'climb';
+        let index = layer.index;
+
+        switch (index) {
+            default: 
+                player.control_mode = 'default';
+                break;
+            case CAVE.LADDER:
+                player.control_mode = 'climb';
+                break;
+            case CAVE.WATER.DEFAULT:
+            case CAVE.WATER.CEILING:
+                player.control_mode = 'swim';
+                break;
+            case CAVE.POWERUP.DEFAULT:
+                layer.alpha = 0;
+                player.weapon.fireRate = 100;
+                break;
         }
-        else if (layer.index == CAVE.WATER.DEFAULT || layer.index == CAVE.WATER.CEILING)
-        {
-            player.control_mode = 'swim';
-        }
-        else
-        {
-            player.control_mode = 'default';
-        }
+
     }
 
     overlapBulletBreakable(bullet, breakable)

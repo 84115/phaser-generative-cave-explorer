@@ -30,7 +30,7 @@ export default Object.freeze({
             BOTH: 546
         }
     },
-    SPAWNER: {
+    POWERUP: {
         DEFAULT: 346
     },
     BRICK: 473,

@@ -29,7 +29,7 @@ export default class Player extends Dude
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
         // Creates 50 bullets, using the 'star' graphic
-        this.weapon = this.game.add.weapon(50, 'star');
+        this.weapon = this.game.add.weapon(100, 'star');
 
         // The bullet will be automatically killed when it leaves the world bounds
         // this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;

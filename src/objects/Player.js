@@ -28,12 +28,12 @@ export default class Player extends Dude
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
-        // Creates 30 bullets, using the 'star' graphic
-        this.weapon = this.game.add.weapon(5, 'star');
+        // Creates 50 bullets, using the 'star' graphic
+        this.weapon = this.game.add.weapon(50, 'star');
 
         // The bullet will be automatically killed when it leaves the world bounds
         // this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-        this.weapon.bulletLifespan = 500;
+        this.weapon.bulletLifespan = 2000;
         this.weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
         // this.weapon.bullets.allowGravity = false;
         this.weapon.bullets.setAll('body.allowGravity', false);
@@ -41,8 +41,8 @@ export default class Player extends Dude
         // The speed at which the bullet is fired
         this.weapon.bulletSpeed = 500;
 
-        // Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
-        this.weapon.fireRate = 100;
+        // Speed-up the rate of fire, allowing them to shoot 1 bullet every 1000ms/1s
+        this.weapon.fireRate = 1000;
 
         // Tell the Weapon to track the 'player' Sprite
         // With no offsets from the position
@@ -139,6 +139,11 @@ export default class Player extends Dude
         }
     }
 
+    render()
+    {
+        this.weapon.debug();
+    }
+
     setHealth(health)
     {
         this.health = health;
@@ -219,11 +224,11 @@ export default class Player extends Dude
 
         if (this.upKey.isDown)
         {
-            this.y = this.y - (125 / 42);
+            this.y = this.y - (125 / 42) * 1.25;
         }
         else if (this.downKey.isDown)
         {
-            this.y = this.y + (125 / 42) * 2;
+            this.y = this.y + (125 / 42) * 2.25;
         }
         else if (this.leftKey.isDown)
         {

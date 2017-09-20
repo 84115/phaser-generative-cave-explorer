@@ -48,7 +48,7 @@ export default class TilemapMergedState extends Phaser.State
         this.breakable = this.game.add.group();
         this.fallable = this.game.add.group();
 
-        this.map.forEach(this.replaceTilesWithSprite, this);
+        // this.map.forEach(this.replaceTilesWithSprite, this);
 
 
 
@@ -69,9 +69,15 @@ export default class TilemapMergedState extends Phaser.State
 
 
         // Rect
-        this.player.proximity = new Phaser.Rectangle(this.player.body.x, this.player.body.y, 32*4, 32*4);
+        // this.proximity = new Phaser.Rectangle(this.player.body.x, this.player.body.y, 32*4, 32*4);
+        this.proximity = this.game.add.sprite(32, 32, null);
+        this.game.physics.enable(this.proximity, Phaser.Physics.ARCADE);
+        this.proximity.body.setSize(32*6, 32*6, 0, 0);
+        this.proximity.body.allowGravity = false;
+        this.proximity.body.immovable = true;
+        this.proximity.body.moves = false;
 
-
+        console.log(this.layer);
 
         // Debug
         // this.layer.debug = true;
@@ -79,26 +85,31 @@ export default class TilemapMergedState extends Phaser.State
 
     render()
     {
-        this.game.debug.rectangle(this.player.proximity, '#33ff00', false);
+        // this.game.debug.rectangle(this.proximity, '#33ff00', false);
+        this.game.debug.body(this.proximity);
     }
 
     update()
     {
-
         this.game.physics.arcade.collide(this.player, this.layer);
         this.game.physics.arcade.overlap(this.player, this.layer, this.overlapPlayerLayer);
 
+        this.game.physics.arcade.overlap(this.proximity, this.layer, this.replaceTilesWithSprite, null, this);
+
         this.game.physics.arcade.collide(this.player, this.breakable);
+        this.game.physics.arcade.collide(this.fallable, this.layer);
 
         // Find a way to replace this?
         // Maybe something like a isFiring
-        if (this.player.fireButton.isDown)
-        {
+        // if (this.player.fireButton.isDown)
+        // {
             this.game.physics.arcade.overlap(this.player.weapon.bullets, this.breakable, this.overlapBulletBreakable, null, this);
-        }
+        // }
 
-        this.player.proximity.x = this.player.body.x - (32*2) + 8;
-        this.player.proximity.y = this.player.body.y - (32*2) + 8;
+        // this.proximity.x = this.player.x;
+        // this.proximity.y = this.player.y;
+        this.proximity.x = this.player.x - (32 * 2) - 16;
+        this.proximity.y = this.player.y - (32 * 2) - 8/* + 16 + 8*/;
 
         this.game.physics.arcade.collide(this.player.weapon.bullets, this.layer);
     }
@@ -155,18 +166,24 @@ export default class TilemapMergedState extends Phaser.State
         }
     }
 
-    replaceTilesWithSprite(tile)
+    replaceTilesWithSprite(proximity, layer)
     {
-        if (tile.index == CAVE.STONE.BREAKABLE)
+        if (layer.index == CAVE.STONE.BREAKABLE)
         {
-            tile.alpha = 0.5;
+            if (layer.alpha != 0.5) {
+                layer.alpha = 0.5;
 
-            this.breakable.add(new TileBreakable(this.game, this.toTileCoordinate(tile.x), this.toTileCoordinate(tile.y), 'stone-breakable'));
+                this.breakable.add(new TileBreakable(this.game, this.toTileCoordinate(layer.x), this.toTileCoordinate(layer.y), 'stone-breakable'));
+            }
         }
-        // else if (tile.index == CAVE.STONE.FALLABLE)
-        // {
-        //     this.fallable.add(new TileFallable(this.game, this.toTileCoordinate(tile.x), this.toTileCoordinate(tile.y), 'stone-breakable'));
-        // }
+        else if (layer.index == CAVE.STONE.FALLABLE)
+        {
+            if (layer.alpha != 0.5) {
+                layer.alpha = 0.5;
+
+                this.fallable.add(new TileFallable(this.game, this.toTileCoordinate(layer.x), this.toTileCoordinate(layer.y), 'stone-breakable'));
+            }
+        }
     }
 
 }

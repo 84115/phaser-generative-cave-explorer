@@ -1,4 +1,5 @@
 import Player from 'objects/Player';
+import Enemy from 'objects/Enemy';
 import TileBreakable from 'objects/TileBreakable';
 import TileFallable from 'objects/TileFallable';
 import CAVE from 'enums/cave';
@@ -58,6 +59,23 @@ export default class TilemapMergedState extends Phaser.State
 
 
 
+        this.enemy = new Enemy(this.game, this.player.body.x+(32*4), this.player.body.y+(32*4), 'dude_sheet');
+        this.enemy.tint = Math.random() * 0xffffff;
+
+        //  Create our Timer
+        // this.timer = new Phaser.Timer(this.game, false);
+        this.timer = this.game.time.create(false);
+
+        //  Set a TimerEvent to occur after 5 seconds
+        this.timer.loop(5000, function() {
+            if (!this.enemy.alive) {
+                this.enemy.reset();
+                this.enemy.tint = Math.random() * 0xffffff;
+            }
+        }, this);
+
+
+
         // Fullscreen
         this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.game.input.onDown.add(this.goFullscreen, this);
@@ -108,6 +126,16 @@ export default class TilemapMergedState extends Phaser.State
         // this.proximity.y = this.player.y;
         this.proximity.x = this.player.x - (32 * 2) - 16;
         this.proximity.y = this.player.y - (32 * 2) - 8/* + 16 + 8*/;
+
+
+        this.game.physics.arcade.collide(this.enemy, this.player);
+
+        this.game.physics.arcade.overlap(this.player.weapon.bullets, this.enemy, function(bullet, enemy) {
+            bullet.kill();
+            enemy.kill();
+        }, null, this);
+
+        this.game.physics.arcade.moveToXY(this.enemy, this.player.body.x, this.player.body.y - 128, 100, 600);
     }
 
     overlapPlayerLayer(player, layer)

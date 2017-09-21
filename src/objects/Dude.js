@@ -1,3 +1,5 @@
+import Sprite from 'objects/Sprite';
+
 /*
  * Dude
  * ====
@@ -6,7 +8,7 @@
  * logo.
  */
 
-export default class Dude extends Phaser.Sprite
+export default class Dude extends Sprite
 {
 
     constructor(game, x, y, key, frame)

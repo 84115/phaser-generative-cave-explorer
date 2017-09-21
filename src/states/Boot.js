@@ -45,6 +45,9 @@ export default class BootState extends Phaser.State {
     // If the game canvas loses focus, keep the game loop running.
     this.stage.disableVisibilityChange = true;
 
+    // Full Screen Type
+    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+
     // Load the graphical assets required to show the splash screen later,
     // using the asset pack data.
     this.load.pack('boot', null, assets);

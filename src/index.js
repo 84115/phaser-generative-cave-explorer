@@ -1,16 +1,17 @@
 import BootState from 'states/Boot';
 import PreloadState from 'states/Preload';
+import TileScreen from 'objects/TileScreen';
 
 class Game extends Phaser.Game
 {
 
 	constructor()
     {
-        // 32*16 = 512 ++ 32*32 = ...
-        // super(800, 600, Phaser.AUTO, 'content', null);
-        // super(32*24, 32*16, Phaser.AUTO, 'content', null);
-        super(32*16, 32*16, Phaser.AUTO, 'content', null);
-        // super(32*16, 32*16, Phaser.AUTO, 'content', null);
+        var screen = new TileScreen(32, 16);
+
+        super(screen.getDimension()*1.5, screen.getDimension(), Phaser.AUTO, 'content', null);
+
+        this.screen = screen;
 
         this.state.add('Boot', BootState);
         this.state.add('Preload', PreloadState);

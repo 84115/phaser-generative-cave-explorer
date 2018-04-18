@@ -15,10 +15,17 @@ export default class Dude extends Sprite
     {
         super(game, x, y, key, frame);
 
-        this.setPhysics();
+        this.createPhysics();
     }
 
-    setPhysics()
+    addExisting(scope)
+    {
+        scope.game.add.existing(this);
+
+        return this;
+    }
+
+    createPhysics()
     {
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
 

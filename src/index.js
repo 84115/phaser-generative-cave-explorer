@@ -9,7 +9,7 @@ class Game extends Phaser.Game
     {
         var screen = new TileScreen(32, 16);
 
-        super(screen.getDimension()*1.5, screen.getDimension(), Phaser.AUTO, 'content', null);
+        super(screen.getDimension(), screen.getDimension(), Phaser.AUTO, 'content', null);
 
         this.screen = screen;
 

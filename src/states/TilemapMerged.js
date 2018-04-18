@@ -21,7 +21,11 @@ export default class TilemapMergedState extends Phaser.State
         // Because we're loading CSV map
         // data we have to specify the tile
         // size here or we can't render it
-        this.map = this.game.add.tilemap('map', this.game.screen.getTileSize(), this.game.screen.getTileSize());
+        this.map = this.game.add.tilemap(
+            'map',
+            this.game.screen.getTileSize(),
+            this.game.screen.getTileSize()
+        );
 
         // Now add in the tileset
         this.map.addTilesetImage('tiles');
@@ -51,21 +55,21 @@ export default class TilemapMergedState extends Phaser.State
         this.breakable = this.game.add.group();
         this.fallable = this.game.add.group();
 
-        // this.map.forEach(this.replaceTilesWithSprite, this);
-
 
 
         // Player
         this.player = new Player(this.game,
             this.game.screen.getCentre(),
             this.game.screen.getCentre(),
-            'dude_sheet');
+            'dude_sheet'
+        );
 
         this.bat = new Enemy(
             this.game,
             this.game.screen.offsetByTiles(this.player.body.x, 4),
             this.game.screen.offsetByTiles(this.player.body.y, 4),
-            'dude_sheet');
+            'dude_sheet'
+        );
 
 
 
@@ -79,7 +83,7 @@ export default class TilemapMergedState extends Phaser.State
         this.proximity.debug = true;
 
         // Debug
-        // this.layer.debug = true;
+        this.layer.debug = true;
     }
 
     update()
@@ -92,6 +96,7 @@ export default class TilemapMergedState extends Phaser.State
         physics.collide(this.player.weapon.bullets, this.layer);
 
         physics.overlap(this.player, this.layer, this.overlapPlayerLayer);
+        physics.collide(this.player, this.layer, this.collidePlayerLayer);
         physics.overlap(this.player.weapon.bullets, this.breakable, this.player.destroyB, null, this);
         physics.overlap(this.proximity, this.layer, this.replaceTilesWithSprite, null, this);
 
@@ -99,7 +104,10 @@ export default class TilemapMergedState extends Phaser.State
 
         physics.overlap(this.player.weapon.bullets, this.enemy, this.player.destroyAB, null, this);
 
-        if (this.bat.alive) physics.moveToXY(this.bat, this.player.body.x, this.player.body.y - 128, 100, 600);
+        if (this.bat.alive)
+        {
+            physics.moveToXY(this.bat, this.player.body.x, this.player.body.y - 128, 100, 600);
+        }
     }
 
     overlapPlayerLayer(player, layer)
@@ -118,8 +126,41 @@ export default class TilemapMergedState extends Phaser.State
                 player.control_mode = 'swim';
                 break;
             case CAVE.POWERUP.DEFAULT:
-                layer.alpha = 0;
+                layer.alpha = 0.1;
                 player.weapon.fireRate = 100;
+                break;
+            case CAVE.SPIKE.CEILING.DEFAULT:
+            case CAVE.SPIKE.CEILING.LEFT:
+            case CAVE.SPIKE.CEILING.RIGHT:
+            case CAVE.SPIKE.CEILING.BOTH:
+            case CAVE.SPIKE.FLOOR.DEFAULT:
+            case CAVE.SPIKE.FLOOR.LEFT:
+            case CAVE.SPIKE.FLOOR.RIGHT:
+            case CAVE.SPIKE.FLOOR.BOTH:
+                console.log(1);
+                player.kill();
+                break;
+        }
+
+    }
+
+    collidePlayerLayer(player, layer)
+    {
+        let index = layer.index;
+
+        switch (index) {
+            default: 
+                break;
+            case CAVE.SPIKE.CEILING.DEFAULT:
+            case CAVE.SPIKE.CEILING.LEFT:
+            case CAVE.SPIKE.CEILING.RIGHT:
+            case CAVE.SPIKE.CEILING.BOTH:
+            case CAVE.SPIKE.FLOOR.DEFAULT:
+            case CAVE.SPIKE.FLOOR.LEFT:
+            case CAVE.SPIKE.FLOOR.RIGHT:
+            case CAVE.SPIKE.FLOOR.BOTH:
+                console.log(1);
+                player.kill();
                 break;
         }
 
@@ -129,15 +170,17 @@ export default class TilemapMergedState extends Phaser.State
     {
         if (layer.index == CAVE.STONE.BREAKABLE)
         {
-            if (layer.alpha != 0.5) {
-                layer.alpha = 0.5;
+            if (layer.alpha != 0.4)
+            {
+                layer.alpha = 0.4;
 
                 this.breakable.add(new TileBreakable(this.game, this.game.screen.toTileCoordinate(layer.x), this.game.screen.toTileCoordinate(layer.y), 'stone-breakable'));
             }
         }
         else if (layer.index == CAVE.STONE.FALLABLE)
         {
-            if (layer.alpha != 0.5) {
+            if (layer.alpha != 0.5)
+            {
                 layer.alpha = 0.5;
 
                 this.fallable.add(new TileFallable(this.game, this.game.screen.toTileCoordinate(layer.x), this.game.screen.toTileCoordinate(layer.y), 'stone-breakable'));

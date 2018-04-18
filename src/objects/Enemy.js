@@ -15,7 +15,7 @@ export default class Enemy extends Dude
     {
         super(game, x, y, key, frame);
 
-        this.setPhysics();
+        this.createPhysics();
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
 

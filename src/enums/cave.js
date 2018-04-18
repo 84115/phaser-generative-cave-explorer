@@ -23,7 +23,7 @@ export default Object.freeze({
             RIGHT: 482,
             BOTH: 483
         },
-        CEILING: {
+        FLOOR: {
             DEFAULT: 458,
             LEFT: 547,
             RIGHT: 545,

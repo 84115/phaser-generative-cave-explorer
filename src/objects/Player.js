@@ -1,13 +1,4 @@
 import Dude from 'objects/Dude';
-import RainbowText from 'objects/RainbowText';
-
-/*
- * Player
- * ====
- *
- * A sample prefab (extended game object class), for displaying the Phaser
- * logo.
- */
 
 export default class Player extends Dude
 {
@@ -16,18 +7,99 @@ export default class Player extends Dude
     {
         super(game, x, y, key, frame);
 
-        this.setHealth(75);
-        this.setControls();
+        this.createHealth(75)
+            .createControls()
+            .createBody()
+            .createWeapon()
+            .createMeta()
+            .addExisting(this);
+    }
+
+    update()
+    {
+        this.metaHealth.setText("health: " + this.health + '/' + this.maxHealth);
+
+        if (this.alive)
+        {
+            if (this.control_mode == 'climb')
+            {
+                this.controlsClimb();
+            }
+            else if (this.control_mode == 'swim')
+            {
+                this.controlsSwim();
+            }
+            else
+            {
+                this.controlsDefault();
+            }
+
+            this.controlsWeapon();
+
+            if (this.tintButton.isDown)
+            {
+                this.tint = Math.random() * 0xffffff;
+            }
+        }
+        else
+        {
+            if (this.resetButton.isDown)
+            {
+                this.reset(0, 3000);
+                this.setHealth(75);
+            }
+        }
+    }
+
+    render()
+    {
+        this.weapon.debug();
+    }
+
+    createHealth(health)
+    {
+        this.health = health;
+        this.maxHealth = this.health;
+
+        return this;
+    }
+
+    createControls()
+    {
+        this.control_mode = 'default';
+
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        this.upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        this.leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+        this.downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        this.rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+
+        this.eKey = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+
+        this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+        this.tintButton = this.game.input.keyboard.addKey(Phaser.KeyCode.T);
+        this.ladderButton = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
+        this.resetButton = this.game.input.keyboard.addKey(Phaser.KeyCode.R);
+
+        return this;
+    }
+
+    createBody()
+    {
         this.body.setSize(20, 32, 5, 16);
+
         this.animations.add('left', [0, 1, 2, 3], 9, true);
         this.animations.add('turn', [4], 20, true);
         this.animations.add('right', [5, 6, 7, 8], 9, true);
         this.animations.add('idle', [4], 20);
         this.animations.add('climb', [9], 9, true);
-        this.control_mode = 'default';
 
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+        return this;
+    }
 
+    createWeapon()
+    {
         // Creates 50 bullets, using the 'star' graphic
         this.weapon = this.game.add.weapon(100, 'star');
 
@@ -49,119 +121,26 @@ export default class Player extends Dude
         // But the 'true' argument tells the weapon to track sprite rotation
         this.weapon.trackSprite(this, 16, 32, false);
 
-        this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-
-        this.tintButton = this.game.input.keyboard.addKey(Phaser.KeyCode.T);
-
-        this.ladderButton = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
-
-        this.text = new RainbowText(this.game, 12, 12, this.health);
-
-        this.resetButton = this.game.input.keyboard.addKey(Phaser.KeyCode.R);
-
-        game.add.existing(this);
+        return this;
     }
 
-    update()
+    createMeta()
     {
-        if (this.alive)
-        {
-            // console.log('Player.......', this.control_mode);
+        let style = {
+            font: "16px Arial",
+            fill: "#fff",
+            align: "left"
+        };
 
-            // if (this.ladderButton.isDown)
-            // {
-            //     this.control_mode = 'climb';
-            // }
-            // else {
-            //     this.control_mode = 'default';
-            // }
+        this.metaHealth = this.game.add.text(16, 16, "health", style);
 
-            if (this.control_mode == 'climb')
-            {
-                this.controlsClimb();
-            }
-            else if (this.control_mode == 'swim')
-            {
-                this.controlsSwim();
-            }
-            else
-            {
-                this.controlsDefault();
-            }
-
-            if (this.cursors.up.isDown) {
-                if (this.cursors.left.isDown) {
-                    this.weapon.fireAngle = Phaser.ANGLE_NORTH_WEST;
-                }
-                else if (this.cursors.right.isDown) {
-                    this.weapon.fireAngle = Phaser.ANGLE_NORTH_EAST;
-                }
-                else {
-                    this.weapon.fireAngle = Phaser.ANGLE_UP;
-                }
-            }
-            else if (this.cursors.down.isDown) {
-                if (this.cursors.left.isDown) {
-                    this.weapon.fireAngle = Phaser.ANGLE_SOUTHdw_WEST;
-                }
-                else if (this.cursors.right.isDown) {
-                    this.weapon.fireAngle = Phaser.ANGLE_SOUTH_EAST;
-                }
-                else {
-                    this.weapon.fireAngle = Phaser.ANGLE_DOWN;
-                }
-            }
-            else {
-                if (this.cursors.left.isDown)
-                {
-                    this.weapon.fireAngle = Phaser.ANGLE_LEFT;
-                }
-                else if (this.cursors.right.isDown)
-                {
-                    this.weapon.fireAngle = Phaser.ANGLE_RIGHT;
-                }
-            }
-
-            if (this.fireButton.isDown)
-            {
-                this.weapon.fire();
-            }
-
-            if (this.tintButton.isDown) {
-                this.tint = Math.random() * 0xffffff;
-            }
-        }
-        else {
-            if (this.resetButton.isDown) {
-                this.reset(0, 3000);
-                this.setHealth(75);
-            }
-        }
-    }
-
-    render()
-    {
-        this.weapon.debug();
-    }
-
-    setHealth(health)
-    {
-        this.health = health;
-        this.maxHealth = this.health;
-    }
-
-    setControls()
-    {
-        this.upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-        this.leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-        this.downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
-        this.rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-        this.eKey = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        return this;
     }
 
     setAnimation(animation='idle')
     {
-        if (this.facing != animation) {
+        if (this.facing != animation)
+        {
             this.animations.play(animation);
             this.facing = animation;
         }
@@ -179,16 +158,13 @@ export default class Player extends Dude
                 if (this.game.time.now)
                 {
                     this.body.velocity.y = -800;
-                    this.health--;
-                    this.text.setText(this.health);
                 }
             }
-            else if (this.eKey.isDown) {
+            else if (this.eKey.isDown)
+            {
                 if (this.game.time.now)
                 {
                     this.body.velocity.y = -275;
-                    this.health--;
-                    this.text.setText(this.health);
                 }
             }
         }
@@ -209,6 +185,56 @@ export default class Player extends Dude
         {
             this.setAnimation('idle');
             this.body.velocity.x = 0;
+        }
+    }
+
+    controlsWeapon()
+    {
+        if (this.cursors.up.isDown)
+        {
+            if (this.cursors.left.isDown)
+            {
+                this.weapon.fireAngle = Phaser.ANGLE_NORTH_WEST;
+            }
+            else if (this.cursors.right.isDown)
+            {
+                this.weapon.fireAngle = Phaser.ANGLE_NORTH_EAST;
+            }
+            else
+            {
+                this.weapon.fireAngle = Phaser.ANGLE_UP;
+            }
+        }
+        else if (this.cursors.down.isDown)
+        {
+            if (this.cursors.left.isDown)
+            {
+                this.weapon.fireAngle = Phaser.ANGLE_SOUTH_WEST;
+            }
+            else if (this.cursors.right.isDown)
+            {
+                this.weapon.fireAngle = Phaser.ANGLE_SOUTH_EAST;
+            }
+            else
+            {
+                this.weapon.fireAngle = Phaser.ANGLE_DOWN;
+            }
+        }
+        else
+        {
+            if (this.cursors.left.isDown)
+            {
+                this.weapon.fireAngle = Phaser.ANGLE_LEFT;
+            }
+            else if (this.cursors.right.isDown)
+            {
+                this.weapon.fireAngle = Phaser.ANGLE_RIGHT;
+            }
+        }
+
+        if (this.fireButton.isDown)
+        {
+            this.weapon.fire();
         }
     }
 

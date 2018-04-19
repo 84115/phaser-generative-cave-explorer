@@ -1,6 +1,7 @@
 import Player from 'objects/Player';
 import Proximity from 'objects/Proximity';
 import Enemy from 'objects/Enemy';
+import BouncingBall from 'objects/BouncingBall';
 import TileBreakable from 'objects/TileBreakable';
 import TileFallable from 'objects/TileFallable';
 import CAVE from 'enums/cave';
@@ -72,6 +73,17 @@ export default class TilemapMergedState extends Phaser.State
         );
 
 
+        this.balls = this.game.add.group();
+        for (var i = 0; i < 50; i++)
+        {
+            this.balls.add(new BouncingBall(
+                this,
+                this.game.world.randomX,
+                this.game.world.randomY
+            ));
+        }
+
+
 
         // Camera
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
@@ -96,7 +108,7 @@ export default class TilemapMergedState extends Phaser.State
         physics.collide(this.player.weapon.bullets, this.layer);
 
         physics.overlap(this.player, this.layer, this.overlapPlayerLayer);
-        physics.collide(this.player, this.layer, this.collidePlayerLayer);
+        // physics.collide(this.player, this.layer, this.collidePlayerLayer);
         physics.overlap(this.player.weapon.bullets, this.breakable, this.player.destroyB, null, this);
         physics.overlap(this.proximity, this.layer, this.replaceTilesWithSprite, null, this);
 
@@ -108,6 +120,9 @@ export default class TilemapMergedState extends Phaser.State
         {
             physics.moveToXY(this.bat, this.player.body.x, this.player.body.y - 128, 100, 600);
         }
+
+        physics.collide(this.balls, this.layer);
+
     }
 
     overlapPlayerLayer(player, layer)

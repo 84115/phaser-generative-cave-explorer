@@ -11,14 +11,11 @@ export default class Player extends Dude
             .createControls()
             .createBody()
             .createWeapon()
-            .createMeta()
             .addExisting(this);
     }
 
     update()
     {
-        this.metaHealth.setText("health: " + this.health + '/' + this.maxHealth);
-
         if (this.alive)
         {
             if (this.control_mode == 'climb')
@@ -35,11 +32,6 @@ export default class Player extends Dude
             }
 
             this.controlsWeapon();
-
-            if (this.tintButton.isDown)
-            {
-                this.tint = Math.random() * 0xffffff;
-            }
         }
         else
         {
@@ -78,8 +70,6 @@ export default class Player extends Dude
         this.eKey = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
 
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-        this.tintButton = this.game.input.keyboard.addKey(Phaser.KeyCode.T);
-        this.ladderButton = this.game.input.keyboard.addKey(Phaser.KeyCode.P);
         this.resetButton = this.game.input.keyboard.addKey(Phaser.KeyCode.R);
 
         return this;
@@ -101,7 +91,7 @@ export default class Player extends Dude
     createWeapon()
     {
         // Creates 50 bullets, using the 'star' graphic
-        this.weapon = this.game.add.weapon(100, 'star');
+        this.weapon = this.game.add.weapon(1000, 'star');
 
         // The bullet will be automatically killed when it leaves the world bounds
         // this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -111,28 +101,15 @@ export default class Player extends Dude
         this.weapon.bullets.setAll('body.allowGravity', false);
 
         // The speed at which the bullet is fired
-        this.weapon.bulletSpeed = 500;
+        this.weapon.bulletSpeed = 750;
 
         // Speed-up the rate of fire, allowing them to shoot 1 bullet every 1000ms/1s
-        this.weapon.fireRate = 1000;
+        this.weapon.fireRate = 2000;
 
         // Tell the Weapon to track the 'player' Sprite
         // With no offsets from the position
         // But the 'true' argument tells the weapon to track sprite rotation
         this.weapon.trackSprite(this, 16, 32, false);
-
-        return this;
-    }
-
-    createMeta()
-    {
-        let style = {
-            font: "16px Arial",
-            fill: "#fff",
-            align: "left"
-        };
-
-        this.metaHealth = this.game.add.text(16, 16, "health", style);
 
         return this;
     }

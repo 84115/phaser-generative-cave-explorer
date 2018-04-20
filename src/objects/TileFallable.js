@@ -9,10 +9,10 @@ export default class TileBreakable extends Phaser.Sprite
 
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
         this.body.allowGravity = true;
-        // this.body.immovable = false;
         this.body.moves = true;
         this.body.collideWorldBounds = true;
-        console.log('drop', this.body);
+        this.body.gravity.y = 500;
+        console.log(this);
 
         game.add.existing(this);
     }

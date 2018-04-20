@@ -28,4 +28,26 @@ export default class Sprite extends Phaser.Sprite
         // this.game.camera.shake(0.0125, 625);
     }
 
+    killA(a, b)
+    {
+        a.kill();
+
+        // this.game.camera.shake(0.0125, 625);
+    }
+
+    killAB(a, b)
+    {
+        a.kill();
+        b.kill();
+
+        // this.game.camera.shake(0.0125, 625);
+    }
+
+    killB(a, b)
+    {
+        b.kill();
+
+        // this.game.camera.shake(0.0125, 625);
+    }
+
 }

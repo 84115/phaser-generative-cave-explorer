@@ -12,7 +12,7 @@ export default class TileScreen
         let divisble = 2;
         let offset = this.getDimension() / divisble;
 
-        return (this.getDimension() * (this.tile_count / divisble)) + offset;
+        return (this.getDimension() * (this.getTilesCount() / divisble)) + offset;
     }
 
     getDimension()

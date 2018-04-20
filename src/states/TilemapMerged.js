@@ -95,7 +95,7 @@ export default class TilemapMergedState extends Phaser.State
         this.proximity.debug = true;
 
         // Debug
-        this.layer.debug = true;
+        // this.layer.debug = true;
     }
 
     update()
@@ -114,6 +114,8 @@ export default class TilemapMergedState extends Phaser.State
 
         physics.collide(this.player, this.bat, this.player.destroyB, null, this);
 
+        physics.collide(this.player, this.fallable, this.player.killA, null, this);
+
         physics.overlap(this.player.weapon.bullets, this.enemy, this.player.destroyAB, null, this);
 
         if (this.bat.alive)
@@ -122,7 +124,6 @@ export default class TilemapMergedState extends Phaser.State
         }
 
         physics.collide(this.balls, this.layer);
-
     }
 
     overlapPlayerLayer(player, layer)
@@ -141,8 +142,11 @@ export default class TilemapMergedState extends Phaser.State
                 player.control_mode = 'swim';
                 break;
             case CAVE.POWERUP.DEFAULT:
-                layer.alpha = 0.1;
-                player.weapon.fireRate = 100;
+                if (layer.alpha != 0.1) {
+                    layer.alpha = 0.1;
+                    player.weapon.fireRate += 2000;
+                    console.log("fire is now " + player.weapon.fireRate);
+                }
                 break;
             case CAVE.SPIKE.CEILING.DEFAULT:
             case CAVE.SPIKE.CEILING.LEFT:
